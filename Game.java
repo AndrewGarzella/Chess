@@ -59,7 +59,9 @@ public class Game implements MouseListener{
 
     panel.setBounds(0,0,560,560);
 
-    Indecator[][] Indeators = new Indecator[8][8];
+    Indicator[][] Indicators = new Indicator[8][8];
+    Boolean White = true;
+
     // sets board
     for(int i = 0; i < 8; i++)
     {
@@ -67,13 +69,15 @@ public class Game implements MouseListener{
         {
             
             // white not white
-            Indeators[i][j] = new Indecator(i, j, false);
+            if((i+j)%2 == 0)
+                White = true;
+            else 
+                White = false;
+
+            Indeators[i][j] = new Indicator(i, j, White);
             if(!(j == 0 || j == 1 || j == 6 || j == 7))
             {
-                if((i+j)%2 == 0)
-                    Board[i][j] = new Square(false,true);
-                else
-                    Board[i][j] = new Square(false,false);
+                Board[i][j] = new Square(false,White);
             }              
         }
     } 
@@ -296,10 +300,10 @@ public class Game implements MouseListener{
             for(Point i : LegalMoves)
             {
                 //
-                // layeredPane.add(new Indecator((int) i.getX(),(int) i.getY(), Board[(int)i.getX()][(int)i.getY()].isWhite).label);
+                // layeredPane.add(new Indicator((int) i.getX(),(int) i.getY(), Board[(int)i.getX()][(int)i.getY()].isWhite).label);
             }
             
-            // TODO make indecators removable
+            // TODO make indicators removable
 
         }
 
@@ -338,8 +342,8 @@ public class Game implements MouseListener{
 
     }
 
-    private class Indecator{
-        Indecator(int xPos, int yPos, boolean isWhite)
+    private class Indicator{
+        Indicator(int xPos, int yPos, boolean isWhite)
         {
             this.Position = new Point(xPos, yPos); 
 
