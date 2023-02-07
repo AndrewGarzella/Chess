@@ -214,16 +214,12 @@ public class Game implements MouseListener{
                         
         }
         
-        // TODO if isInPiece is still false need to remove old indicators if they are on screan
-
+        
         // show a move
-       
-
-
         if(isInPiece)
         {
             // find what piece is in that square
-            //piece is in squar Board[xSquare][ySquare]
+            // piece is in squar Board[xSquare][ySquare]
             // TODO then find all legal moves
             // IMPORTANT points are not ints they must be casted (For futer andrew)
             ArrayList<Point> LegalMoves = new ArrayList<Point>();
@@ -305,11 +301,17 @@ public class Game implements MouseListener{
             // TODO make indicators removable
 
         }
+        // TODO if isInPiece is still false need to remove old indicators if they are on screan
+        // else // isInPeice = false
+        // {  
 
-        // TODO if mouse position is inside of a highlighted square 
+        //     // TODO if mouse position is inside of a indicated square 
+        //     if(Board[xSquare][ySquare].isOcupied )
+        //     // TODO move selected piece to that square
 
-            // TODO move selected piece to that square
+        // }
 
+        
         
     }
 
@@ -335,10 +337,9 @@ public class Game implements MouseListener{
         }
 
         public boolean isWhite;
-
         public boolean isOcupied;
         public Piece piece;
-
+        public int Type; // type of piece or indicator in square
     }
 
     private class Indicator{
