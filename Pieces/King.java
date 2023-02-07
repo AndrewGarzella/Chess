@@ -32,7 +32,7 @@ public class King extends Piece {
         }
         this.White = White;
 
-        Type = Piece.KING;
+        // Type = Piece.KING;
     }
 
     

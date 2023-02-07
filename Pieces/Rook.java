@@ -30,7 +30,7 @@ public class Rook extends Piece {
             label.setBackground(new Color(0,0,0,0));
         }
         this.White = White;
-        Type = Piece.ROOK;
+        // Type = Piece.ROOK;
     }
 
 }

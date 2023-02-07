@@ -32,7 +32,7 @@ public class Pawn extends Piece {
 
         this.White = White;
 
-        Type = Piece.PAWN;
+        // Type = Piece.PAWN;
     }
 
     // @Override

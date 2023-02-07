@@ -15,6 +15,7 @@ public class Piece  {
     final public static int ROOK = 3;
     final public static int QUEEN = 4;
     final public static int KING = 5;
+    final public static int INDICATOR = 6;
     
 
     public boolean Selected = false;
@@ -23,18 +24,18 @@ public class Piece  {
     public Boolean White;
     public ImageIcon icon;
     public JLabel label; 
-    public int Type;
+    // public int Type;
     
 
-    public Type getType()
-    {
-        return type;
-    }
+    // public Type getType()
+    // {
+    //     return type;
+    // }
 
-    public void setType(Type type)
-    {
-        this.type = type;
-    }
+    // public void setType(Type type)
+    // {
+    //     this.type = type;
+    // }
 //     public ArrayList<Point> FindMove(Square[][] Board)
 //     {
         
