@@ -10,7 +10,6 @@ import java.awt.*;
 import java.awt.Point;
 
 import Chess.Pieces.*;
-import Chess.Pieces.Type;
 
 public class Game implements MouseListener{
     public JFrame frame;
@@ -74,7 +73,7 @@ public class Game implements MouseListener{
             else 
                 White = false;
 
-            Indeators[i][j] = new Indicator(i, j, White);
+            Indicators[i][j] = new Indicator(i, j, White);
             if(!(j == 0 || j == 1 || j == 6 || j == 7))
             {
                 Board[i][j] = new Square(false,White);
