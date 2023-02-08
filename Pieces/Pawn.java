@@ -35,6 +35,35 @@ public class Pawn extends Piece {
         // Type = Piece.PAWN;
     }
 
+    public Pawn(boolean White, int xPos, int yPos)
+    {
+        if(White){
+            this.xPos = xPos;
+            // OriginalyPos = this.xPos;
+            this.yPos = yPos;
+            icon = new ImageIcon("Sprites/pawnW.png");
+            label = new JLabel();
+            label.setOpaque(true);
+            label.setIcon(icon);
+            label.setBounds(xPos*64,yPos*64,icon.getIconWidth(),icon.getIconHeight());
+            label.setBackground(new Color(0,0,0,0));
+        }
+        else{
+            this.xPos = xPos;
+            this.yPos = yPos;
+            icon = new ImageIcon("Sprites/pawnB.png");
+            label = new JLabel();
+            label.setOpaque(true);
+            label.setIcon(icon);
+            label.setBounds(xPos*64,yPos*64,icon.getIconWidth(),icon.getIconHeight());
+            label.setBackground(new Color(0,0,0,0));
+        }
+
+        this.White = White;
+
+        // Type = Piece.PAWN;
+    }
+
     // @Override
     // public ArrayList<Point> FindMove(Square[][] Board)
     // {

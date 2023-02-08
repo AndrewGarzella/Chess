@@ -340,17 +340,22 @@ public class Game implements MouseListener{
                 }
             }
 
+            // calls move funtion for piece
             Board[pieceXPos][pieceYPos].piece.Move(xSquare, ySquare);
+            // deselects the piece
             Board[pieceXPos][pieceYPos].piece.isSelected = false;
+            // hides the inicators 
             HideIndicators();
+            // updates board
+            UpdateBoard(pieceXPos,pieceYPos,xSquare,ySquare);
 
         }
 
-        // TODO if isInPiece is still false need to remove old indicators if they are on screan
+        // if isInPiece is still false need to remove old indicators if they are on screan
         else // isInPeice = false && isInIndicator == false
         {  
 
-            // TODO if mouse position is inside of a indicated square hide the indicators
+            // if mouse position is inside of a indicated square hide the indicators
              
             HideIndicators();
         }
@@ -373,6 +378,41 @@ public class Game implements MouseListener{
         }
     }
 
+    private void UpdateBoard(int oldXPos,int oldYPos, int newXPos, int newYPos)
+    {
+        // switch(Board[oldXPos][oldYPos].piece.Type){
+        //     case Piece.PAWN:
+        //         Board[]
+        //         break;
+
+        //     case Piece.KNIGHT:
+                
+        //         break;
+
+        //     case Piece.BISHOP:
+        //         break;
+
+        //     case Piece.ROOK:
+        //         break;
+
+        //     case Piece.KING:
+        //         break;
+
+        //     case Piece.QUEEN:
+        //         break;  
+                        
+        // }
+        // Board[oldXPos][oldYPos]
+        // need switch 
+        Board[newXPos][newXPos].piece = new Pawn(Board[oldXPos][oldYPos].piece.White, newXPos, newYPos);
+        Board[newXPos][newXPos].Type = Piece.PAWN;
+        // Board[newXPos][newXPos].piece = new Piece();
+
+        Board[oldXPos][oldYPos].piece = new Piece();
+        Board[oldXPos][oldXPos].isOcupied = false;
+        Board[newXPos][newYPos].isOcupied = true;
+    }
+
 
 
     public class Square{
@@ -380,7 +420,8 @@ public class Game implements MouseListener{
         {
             this.isOcupied = isOcupied;
             this.isWhite = isWhite;
-            Type = Piece.INDICATOR;
+            piece = new Piece();
+            Type = Piece.OPEN;
         }
 
         Square(boolean isOcupied, Piece piece)
@@ -394,6 +435,8 @@ public class Game implements MouseListener{
                 isWhite = false;
 
         }
+        
+    
 
         public boolean isWhite;
         public boolean isOcupied;

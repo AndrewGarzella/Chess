@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 
 
 public class Piece  {
+    final public static int OPEN = -1;
     final public static int PAWN = 0;
     final public static int KNIGHT = 1;
     final public static int BISHOP = 2;
@@ -26,12 +27,26 @@ public class Piece  {
     public JLabel label; 
     public int Type;
 
+    // moves the object label and updates xpos & ypos
     public void Move(int NewXPos, int NewYPos)
     {
         xPos = NewXPos;
         yPos = NewYPos;
         label.setBounds(xPos*64,yPos*64,icon.getIconWidth(),icon.getIconHeight());
     }
+
+    // // gets rid of all data in object
+    // public void clear()
+    // {
+    //     isSelected = null;
+    //     Alive = null;
+    //     xPos = null; 
+    //     yPos = null;
+    //     White = null;
+    //     icon.setImage(null);
+    //     label.; 
+    //     Type = Piece.OPEN;
+    // }
     
 
     // public Type getType()
