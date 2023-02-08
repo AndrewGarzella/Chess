@@ -16,7 +16,7 @@ public class Piece  {
     final public static int QUEEN = 4;
     final public static int KING = 5;
     final public static int INDICATOR = 6;
-    
+
 
     public boolean Selected = false;
     public boolean Alive = true;
@@ -24,7 +24,7 @@ public class Piece  {
     public Boolean White;
     public ImageIcon icon;
     public JLabel label; 
-    // public int Type;
+    public int Type;
     
 
     // public Type getType()

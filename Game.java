@@ -17,6 +17,8 @@ public class Game implements MouseListener{
     public JLayeredPane layeredPane;
     // public boolean[][] Board = new boolean[8][8];
     private Square[][] Board = new Square[8][8];
+    Indicator[][] Indicators = new Indicator[8][8];
+
     
 
     public Game()
@@ -59,7 +61,7 @@ public class Game implements MouseListener{
     panel.setBounds(0,0,560,560);
 
 
-    Indicator[][] Indicators = new Indicator[8][8];
+    
     Boolean White = true;
 
     // sets board and adds indicators
@@ -229,6 +231,8 @@ public class Game implements MouseListener{
             
             // switch checks what kind of piece is in the square then each case is what moves are legal
             // legal moves get added to LegalMoves ArrayList in the form of points
+            
+
             switch(Board[xSquare][ySquare].piece.Type){
                 case Piece.PAWN:
                     // TODO pawn moves twice on turn 1
@@ -290,31 +294,48 @@ public class Game implements MouseListener{
                 case Piece.QUEEN:
                     // TODO diagonals and straight aways
                     break;  
-                case Piece.INDICATOR:
-                    break;              
+                            
             }
 
             
 
             // TODO show all legal moves and make them removable
-            for(Point lm : LegalMoves)
+            for(Point i : LegalMoves)
             {
-                Indicator[(int) lm.getX()][(int) lm.getY()].setOpaque(true);
+                Indicators[(int) i.getX()][(int) i.getY()].label.setVisible(true);
             }
             
-            // TODO make indicators removable
 
         }
-        // TODO if isInPiece is still false need to remove old indicators if they are on screan
-        // else // isInPeice = false
-        // {  
 
-        //     // TODO if mouse position is inside of a indicated square 
-        //     if(Board[xSquare][ySquare].isOcupied )
-        //     // TODO move selected piece to that square
+        //TODO if clicked on indicator move piece to square 
+        // if(Board[xSquare][ySquare].Type == Piece.INDICATOR)
+        // {
 
         // }
 
+        // TODO if isInPiece is still false need to remove old indicators if they are on screan
+        else // isInPeice = false && isInIndicator == false
+        {  
+
+            // TODO if mouse position is inside of a indicated square hide the indicators
+             
+            for(int i = 0; i < 8; i ++)
+            {
+                for(int j = 0; j < 8; j++)
+                {
+                    if(Board[i][j].Type == Piece.INDICATOR)
+                    {
+                        if(Indicators[i][j].label.isVisible())
+                        {
+                            Indicators[i][j].label.setVisible(false);
+                        }
+                    }
+                }
+            }
+        }
+
+        
         
         
     }
@@ -326,6 +347,7 @@ public class Game implements MouseListener{
         {
             this.isOcupied = isOcupied;
             this.isWhite = isWhite;
+            Type = Piece.INDICATOR;
         }
 
         Square(boolean isOcupied, Piece piece)
