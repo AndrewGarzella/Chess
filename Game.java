@@ -197,6 +197,7 @@ public class Game implements MouseListener{
         // System.out.println(x+","+y);
         // if mouse position is inside a piece label
         boolean isInPiece = false; 
+        boolean isInVisibleIndicator = false;
         int xSquare = -1;
         int ySquare = -1;
         for(int i = 0; i < 8; i++)
@@ -209,12 +210,19 @@ public class Game implements MouseListener{
                     isInPiece = true;
                     xSquare = i;
                     ySquare = j;
+                    Board[i][j].piece.isSelected = true;
                 }
-                if(isInPiece)
+                if(((x > (i*64)+8 && x <= ((i+1)*64)+8) && (y > (j*64)+30 && y <= ((j+1)*64)+30)) && Indicators[i][j].label.isVisible())  
+                {
+                    isInVisibleIndicator = true;
+                    xSquare = i;
+                    ySquare = j;
+                }
+                if(isInPiece || isInVisibleIndicator)
                     break;
                 
             }
-            if(isInPiece)
+            if(isInPiece || isInVisibleIndicator)
                 break;
                         
         }
@@ -299,7 +307,7 @@ public class Game implements MouseListener{
 
             
 
-            // TODO show all legal moves and make them removable
+            //show all legal moves 
             for(Point i : LegalMoves)
             {
                 Indicators[(int) i.getX()][(int) i.getY()].label.setVisible(true);
@@ -308,11 +316,35 @@ public class Game implements MouseListener{
 
         }
 
-        //TODO if clicked on indicator move piece to square 
-        // if(Board[xSquare][ySquare].Type == Piece.INDICATOR)
-        // {
+        // TODO if clicked on indicator move piece to square 
+        else if(isInVisibleIndicator)
+        {
+            // finds the piece player is trying to move
+            int pieceXPos = -1;
+            int pieceYPos = -1;
+            for(int i = 0; i < 8; i ++)
+            {
+                for(int j = 0; j < 8; j++)
+                {
+                    try {
+                        if(Board[i][j].piece.isSelected)
+                        {
+                            pieceXPos = i;
+                            pieceYPos = j;
+                        }
+                    } catch (Exception n) {
+                        // TODO: handle exception
+                        // System.out.println(n);
+                    }
+                    
+                }
+            }
 
-        // }
+            Board[pieceXPos][pieceYPos].piece.Move(xSquare, ySquare);
+            Board[pieceXPos][pieceYPos].piece.isSelected = false;
+            HideIndicators();
+
+        }
 
         // TODO if isInPiece is still false need to remove old indicators if they are on screan
         else // isInPeice = false && isInIndicator == false
@@ -320,24 +352,25 @@ public class Game implements MouseListener{
 
             // TODO if mouse position is inside of a indicated square hide the indicators
              
-            for(int i = 0; i < 8; i ++)
-            {
-                for(int j = 0; j < 8; j++)
-                {
-                    if(Board[i][j].Type == Piece.INDICATOR)
-                    {
-                        if(Indicators[i][j].label.isVisible())
-                        {
-                            Indicators[i][j].label.setVisible(false);
-                        }
-                    }
-                }
-            }
+            HideIndicators();
         }
 
         
         
         
+    }
+
+    private void HideIndicators() {
+        for(int i = 0; i < 8; i ++)
+        {
+            for(int j = 0; j < 8; j++)
+            {
+                if(Board[i][j].Type == Piece.INDICATOR && Indicators[i][j].label.isVisible())
+                {
+                    Indicators[i][j].label.setVisible(false);
+                }
+            }
+        }
     }
 
 

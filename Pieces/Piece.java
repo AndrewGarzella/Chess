@@ -18,13 +18,20 @@ public class Piece  {
     final public static int INDICATOR = 6;
 
 
-    public boolean Selected = false;
+    public boolean isSelected = false;
     public boolean Alive = true;
     public int xPos, yPos;
     public Boolean White;
     public ImageIcon icon;
     public JLabel label; 
     public int Type;
+
+    public void Move(int NewXPos, int NewYPos)
+    {
+        xPos = NewXPos;
+        yPos = NewYPos;
+        label.setBounds(xPos*64,yPos*64,icon.getIconWidth(),icon.getIconHeight());
+    }
     
 
     // public Type getType()
