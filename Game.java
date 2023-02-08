@@ -58,10 +58,11 @@ public class Game implements MouseListener{
 
     panel.setBounds(0,0,560,560);
 
+
     Indicator[][] Indicators = new Indicator[8][8];
     Boolean White = true;
 
-    // sets board
+    // sets board and adds indicators
     for(int i = 0; i < 8; i++)
     {
         for(int j = 0; j < 8; j++)
@@ -74,6 +75,9 @@ public class Game implements MouseListener{
                 White = false;
 
             Indicators[i][j] = new Indicator(i, j, White);
+
+            layeredPane.add(Indicators[i][j].label);
+
             if(!(j == 0 || j == 1 || j == 6 || j == 7))
             {
                 Board[i][j] = new Square(false,White);
@@ -203,7 +207,6 @@ public class Game implements MouseListener{
                     isInPiece = true;
                     xSquare = i;
                     ySquare = j;
-                    // System.out.println(xSquare+","+ySquare);
                 }
                 if(isInPiece)
                     break;
@@ -286,16 +289,17 @@ public class Game implements MouseListener{
 
                 case Piece.QUEEN:
                     // TODO diagonals and straight aways
-                    break;                
+                    break;  
+                case Piece.INDICATOR:
+                    break;              
             }
 
             
 
             // TODO show all legal moves and make them removable
-            for(Point i : LegalMoves)
+            for(Point lm : LegalMoves)
             {
-                //
-                // layeredPane.add(new Indicator((int) i.getX(),(int) i.getY(), Board[(int)i.getX()][(int)i.getY()].isWhite).label);
+                Indicator[(int) lm.getX()][(int) lm.getY()].setOpaque(true);
             }
             
             // TODO make indicators removable
@@ -345,32 +349,33 @@ public class Game implements MouseListener{
     private class Indicator{
         Indicator(int xPos, int yPos, boolean isWhite)
         {
-            this.Position = new Point(xPos, yPos); 
+            // this.Position = new Point(xPos, yPos); 
 
             label = new JLabel(){
-            @Override
-            public void paint(Graphics g) 
-            {
-                super.paint(g);
-                if(isWhite)
-                    label.setBackground(Color.WHITE);
-                else
-                    label.setBackground(Color.DARK_GRAY);
-                    
-                g.setColor(new Color(0,0,0,50));
-                g.fillOval((int) (label.getWidth()*.25), (int) (label.getHeight()*.25), 32,32);
+                @Override
+                public void paint(Graphics g) 
+                {
+                    super.paint(g);
+                    if(isWhite)
+                        label.setBackground(Color.WHITE);
+                    else
+                        label.setBackground(Color.DARK_GRAY);
+                        
+                    g.setColor(new Color(0,0,0,50));
+                    g.fillOval((int) (label.getWidth()*.25), (int) (label.getHeight()*.25), 32,32);
 
-                    
-            }
-        };
+                        
+                }
+            };
+            label.setVisible(false);
             label.setBounds(xPos*64, yPos*64, 64, 64);
-            label.setOpaque(true);
+            
             
 
         }
 
         public JLabel label;
-        public Point Position;
+        // public Point Position;
     }
 
 
