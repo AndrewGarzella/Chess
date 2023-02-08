@@ -18,7 +18,10 @@ public class Game implements MouseListener{
     // public boolean[][] Board = new boolean[8][8];
     private Square[][] Board = new Square[8][8];
     Indicator[][] Indicators = new Indicator[8][8];
-
+    
+    //define pieces
+    Pawn[] WhitePawns = new Pawn[8];
+    Pawn[] BlackPawns = new Pawn[8];
     
 
     public Game()
@@ -89,8 +92,8 @@ public class Game implements MouseListener{
     
 
     //adds pawns
-    Pawn[] WhitePawns = new Pawn[8];
-    Pawn[] BlackPawns = new Pawn[8];
+    // Pawn[] WhitePawns = new Pawn[8];
+    // Pawn[] BlackPawns = new Pawn[8];
 
     for(int i = 0; i < 8;i++)
     {
@@ -347,7 +350,21 @@ public class Game implements MouseListener{
             // hides the inicators 
             HideIndicators();
             // updates board
+            
             UpdateBoard(pieceXPos,pieceYPos,xSquare,ySquare);
+            // for(int i = 0; i < 8; i++)
+            // {
+            //     if(WhitePawns[i].xPos == xSquare && WhitePawns[i].yPos == ySquare)
+            //         Board[xSquare][ySquare].piece = WhitePawns[i];
+
+                
+            // }
+            // Board[xSquare][ySquare].Type = Piece.PAWN;
+            // // Board[newXPos][newXPos].piece = new Piece();
+
+            // Board[pieceXPos][pieceYPos].piece = null;
+            // Board[pieceXPos][pieceYPos].isOcupied = false;
+            // Board[xSquare][ySquare].isOcupied = true;
 
         }
 
@@ -370,7 +387,7 @@ public class Game implements MouseListener{
         {
             for(int j = 0; j < 8; j++)
             {
-                if(Board[i][j].Type == Piece.INDICATOR && Indicators[i][j].label.isVisible())
+                if(Indicators[i][j].label.isVisible())
                 {
                     Indicators[i][j].label.setVisible(false);
                 }
@@ -402,15 +419,24 @@ public class Game implements MouseListener{
         //         break;  
                         
         // }
-        // Board[oldXPos][oldYPos]
-        // need switch 
-        Board[newXPos][newXPos].piece = new Pawn(Board[oldXPos][oldYPos].piece.White, newXPos, newYPos);
-        Board[newXPos][newXPos].Type = Piece.PAWN;
+        for(int i = 0; i < 8; i++)
+        {
+            if(WhitePawns[i].xPos == newXPos && WhitePawns[i].yPos == newYPos)
+                Board[newXPos][newYPos].piece = WhitePawns[i];
+
+            
+        }
+        Board[newXPos][newYPos].Type = Piece.PAWN;
         // Board[newXPos][newXPos].piece = new Piece();
 
-        Board[oldXPos][oldYPos].piece = new Piece();
-        Board[oldXPos][oldXPos].isOcupied = false;
+        Board[oldXPos][oldYPos].piece = null;
+        Board[oldXPos][oldYPos].isOcupied = false;
         Board[newXPos][newYPos].isOcupied = true;
+        // Board[oldXPos][oldYPos]
+        // need switch 
+        
+        
+        
     }
 
 
