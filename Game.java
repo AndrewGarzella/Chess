@@ -193,6 +193,7 @@ public class Game implements MouseListener{
 
     @Override
     public void mouseClicked(MouseEvent e) {
+
         // Get mouse position
         int x = e.getX();
         int y = e.getY();
@@ -207,6 +208,8 @@ public class Game implements MouseListener{
         {
             for(int j = 0; j < 8; j++)
             {
+                // if(Board[i][j].piece.isSelected)
+                //     Board[i][j].piece.isSelected = false;
                 // +8 for the boarder of the screen, +30 for the top of the screan
                 if(((x > (i*64)+8 && x <= ((i+1)*64)+8) && (y > (j*64)+30 && y <= ((j+1)*64)+30)) && Board[i][j].isOcupied)  
                 {
@@ -214,6 +217,17 @@ public class Game implements MouseListener{
                     xSquare = i;
                     ySquare = j;
                     Board[i][j].piece.isSelected = true;
+                    HideIndicators();
+
+                }
+                else 
+                {
+                    try {
+                        Board[i][j].piece.isSelected = false;
+
+                    } catch (Exception n) {
+                        // System.err.println(n);
+                    }
                 }
                 if(((x > (i*64)+8 && x <= ((i+1)*64)+8) && (y > (j*64)+30 && y <= ((j+1)*64)+30)) && Indicators[i][j].label.isVisible())  
                 {
@@ -221,11 +235,11 @@ public class Game implements MouseListener{
                     xSquare = i;
                     ySquare = j;
                 }
-                if(isInPiece || isInVisibleIndicator)
+                if(isInVisibleIndicator)
                     break;
                 
             }
-            if(isInPiece || isInVisibleIndicator)
+            if(isInVisibleIndicator)
                 break;
                         
         }
@@ -259,27 +273,28 @@ public class Game implements MouseListener{
                                 LegalMoves.add(new Point(xSquare-1,ySquare-1));
                             if(Board[xSquare+1][ySquare-1].isOcupied && !Board[xSquare+1][ySquare-1].piece.White)
                                 LegalMoves.add(new Point(xSquare+1,ySquare-1));
-                        } catch(ArrayIndexOutOfBoundsException i){ // cant use e because mouseclicked passes e in 
-                            System.out.println(i);
+                        } catch(ArrayIndexOutOfBoundsException n){ // cant use e because mouseclicked passes e in 
+                            // System.out.println(n);
                         }
                     }
-                    if(!Board[xSquare][ySquare].piece.White)
-                    {
-                        // checks if square ahead of pawn has a piece in it as balck
-                        if(!Board[xSquare][ySquare+1].isOcupied)
-                            LegalMoves.add(new Point(xSquare,ySquare+1));
+                    //ONLY white pieces for now
+                    // if(!Board[xSquare][ySquare].piece.White)
+                    // {
+                    //     // checks if square ahead of pawn has a piece in it as balck
+                    //     if(!Board[xSquare][ySquare+1].isOcupied)
+                    //         LegalMoves.add(new Point(xSquare,ySquare+1));
 
-                        // checks if diagonals are ocupied by a black piece
-                        try{
-                            if(Board[xSquare-1][ySquare+1].isOcupied && !Board[xSquare-1][ySquare+1].piece.White)
-                                LegalMoves.add(new Point(xSquare-1,ySquare-1));
-                            if(Board[xSquare+1][ySquare+1].isOcupied && !Board[xSquare+1][ySquare+1].piece.White)
-                                LegalMoves.add(new Point(xSquare+1,ySquare-1));
-                        } catch(ArrayIndexOutOfBoundsException i){ // cant use e because mouseclicked passes e in 
-                            System.out.println(i);
-                        }
+                    //     // checks if diagonals are ocupied by a black piece
+                    //     try{
+                    //         if(Board[xSquare-1][ySquare+1].isOcupied && !Board[xSquare-1][ySquare+1].piece.White)
+                    //             LegalMoves.add(new Point(xSquare-1,ySquare-1));
+                    //         if(Board[xSquare+1][ySquare+1].isOcupied && !Board[xSquare+1][ySquare+1].piece.White)
+                    //             LegalMoves.add(new Point(xSquare+1,ySquare-1));
+                    //     } catch(ArrayIndexOutOfBoundsException i){ // cant use e because mouseclicked passes e in 
+                    //         System.out.println(i);
+                    //     }
 
-                    }
+                    // }
                     
                     // TODO add en passant 
 
@@ -336,7 +351,6 @@ public class Game implements MouseListener{
                             pieceYPos = j;
                         }
                     } catch (Exception n) {
-                        // TODO: handle exception
                         // System.out.println(n);
                     }
                     
@@ -350,8 +364,8 @@ public class Game implements MouseListener{
             // hides the inicators 
             HideIndicators();
             // updates board
-            
             UpdateBoard(pieceXPos,pieceYPos,xSquare,ySquare);
+
             // for(int i = 0; i < 8; i++)
             // {
             //     if(WhitePawns[i].xPos == xSquare && WhitePawns[i].yPos == ySquare)
