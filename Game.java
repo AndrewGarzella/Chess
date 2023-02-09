@@ -19,10 +19,29 @@ public class Game implements MouseListener{
     private Square[][] Board = new Square[8][8];
     Indicator[][] Indicators = new Indicator[8][8];
     
-    //define pieces
+    //define pieces pawns are initalized int construtor with for loop
     Pawn[] WhitePawns = new Pawn[8];
     Pawn[] BlackPawns = new Pawn[8];
+
+    // init kings
+    King WhiteKing = new King(true, 3);
+    King BlackKing = new King(false, 3);
+
+    // init queen
+    Queen WhiteQueen = new Queen(true, 4);
+    Queen BlackQueen = new Queen(false, 4);
+
+    // init Bishops
+    Bishop[] WhiteBishop = {new Bishop(true, 2),new Bishop(true, 5)};
+    Bishop[] BlackBishop = {new Bishop(false, 2),new Bishop(false, 5)};
     
+    //inti Knight
+    Knight[] WhiteKnight = {new Knight(true, 1),new Knight(true, 6)};
+    Knight[] BlackKnight = {new Knight(false, 1),new Knight(false,6)};
+
+    //init Rooks
+    Rook[] WhiteRook = {new Rook(true, 0),new Rook(true, 7)};
+    Rook[] BlackRook = {new Rook(false, 0),new Rook(false,7)};
 
     public Game()
     {
@@ -110,24 +129,24 @@ public class Game implements MouseListener{
     }
 
     //adds Kings 
-    King WhiteKing = new King(true, 3);
-    King BlackKing = new King(false, 3);
+    // King WhiteKing = new King(true, 3);
+    // King BlackKing = new King(false, 3);
     Board[WhiteKing.xPos][WhiteKing.yPos] = new Square(true, WhiteKing);
     Board[BlackKing.xPos][BlackKing.yPos] = new Square(true, BlackKing);    
     layeredPane.add(WhiteKing.label);
     layeredPane.add(BlackKing.label);
     
     //adds queens
-    Queen WhiteQueen = new Queen(true, 4);
-    Queen BlackQueen = new Queen(false, 4);
+    // Queen WhiteQueen = new Queen(true, 4);
+    // Queen BlackQueen = new Queen(false, 4);
     Board[WhiteQueen.xPos][WhiteQueen.yPos] = new Square(true, WhiteQueen);
     Board[BlackQueen.xPos][BlackQueen.yPos] = new Square(true, BlackQueen);
     layeredPane.add(WhiteQueen.label);
     layeredPane.add(BlackQueen.label);
 
     //adds bishops
-    Bishop[] WhiteBishop = {new Bishop(true, 2),new Bishop(true, 5)};
-    Bishop[] BlackBishop = {new Bishop(false, 2),new Bishop(false, 5)};
+    // Bishop[] WhiteBishop = {new Bishop(true, 2),new Bishop(true, 5)};
+    // Bishop[] BlackBishop = {new Bishop(false, 2),new Bishop(false, 5)};
     Board[WhiteBishop[0].xPos][WhiteBishop[0].yPos] = new Square(true, WhiteBishop[0]);
     Board[WhiteBishop[1].xPos][WhiteBishop[1].yPos] = new Square(true, WhiteBishop[1]);
     Board[BlackBishop[0].xPos][BlackBishop[0].yPos] = new Square(true, BlackBishop[0]);
@@ -139,8 +158,8 @@ public class Game implements MouseListener{
     
 
     //adds knights
-    Knight[] WhiteKnight = {new Knight(true, 1),new Knight(true, 6)};
-    Knight[] BlackKnight = {new Knight(false, 1),new Knight(false,6)};
+    // Knight[] WhiteKnight = {new Knight(true, 1),new Knight(true, 6)};
+    // Knight[] BlackKnight = {new Knight(false, 1),new Knight(false,6)};
     Board[WhiteKnight[0].xPos][WhiteKnight[0].yPos] = new Square(true, WhiteKnight[0]);
     Board[WhiteKnight[1].xPos][WhiteKnight[1].yPos] = new Square(true, WhiteKnight[1]);
     Board[BlackKnight[0].xPos][BlackKnight[0].yPos] = new Square(true, BlackKnight[0]);
@@ -151,8 +170,8 @@ public class Game implements MouseListener{
     layeredPane.add(BlackKnight[1].label);
 
     //adds Rooks
-    Rook[] WhiteRook = {new Rook(true, 0),new Rook(true, 7)};
-    Rook[] BlackRook = {new Rook(false, 0),new Rook(false,7)};
+    // Rook[] WhiteRook = {new Rook(true, 0),new Rook(true, 7)};
+    // Rook[] BlackRook = {new Rook(false, 0),new Rook(false,7)};
     Board[WhiteRook[0].xPos][WhiteRook[0].yPos] = new Square(true, WhiteRook[0]);
     Board[WhiteRook[1].xPos][WhiteRook[1].yPos] = new Square(true, WhiteRook[1]);
     Board[BlackRook[0].xPos][BlackRook[0].yPos] = new Square(true, BlackRook[0]);
@@ -220,15 +239,7 @@ public class Game implements MouseListener{
                     HideIndicators();
 
                 }
-                else 
-                {
-                    try {
-                        Board[i][j].piece.isSelected = false;
-
-                    } catch (Exception n) {
-                        // System.err.println(n);
-                    }
-                }
+                
                 if(((x > (i*64)+8 && x <= ((i+1)*64)+8) && (y > (j*64)+30 && y <= ((j+1)*64)+30)) && Indicators[i][j].label.isVisible())  
                 {
                     isInVisibleIndicator = true;
@@ -253,11 +264,15 @@ public class Game implements MouseListener{
             // TODO then find all legal moves
             // IMPORTANT points are not ints they must be casted (For futer andrew)
             ArrayList<Point> LegalMoves = new ArrayList<Point>();
+
+            // resets legalmoves 
+            // for(Point i : LegalMoves)
+            // {
+            //     LegalMoves.remove(i);
+            // }
             
             // switch checks what kind of piece is in the square then each case is what moves are legal
             // legal moves get added to LegalMoves ArrayList in the form of points
-            
-
             switch(Board[xSquare][ySquare].piece.Type){
                 case Piece.PAWN:
                     // TODO pawn moves twice on turn 1
@@ -307,19 +322,93 @@ public class Game implements MouseListener{
 
                 case Piece.BISHOP:
                     // TODO check diagonals
+                    //up left diagonal check
+                    for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
+                    {
+                        try {
+                            if(!Board[xSquare-i][ySquare-i].isOcupied)
+                            {
+                                LegalMoves.add(new Point(xSquare-i,ySquare-i));
+                            }
+                            else if(Board[xSquare+i][ySquare-i].isOcupied && !Board[xSquare-i][ySquare-i].piece.White )
+                            {
+                                LegalMoves.add(new Point(xSquare-i,ySquare-i));
+                                break;
+                            }
+                            
+                        } catch (Exception n) {
+                            // System.err.println(n);
+                        }                        
+                    }
+                    // checks up right digonal
+                    for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
+                    {
+                        try {
+                            if(!Board[xSquare+i][ySquare-i].isOcupied)
+                            {
+                                LegalMoves.add(new Point(xSquare+i,ySquare-i));
+                            }
+                            else if(Board[xSquare+i][ySquare-i].isOcupied && !Board[xSquare+i][ySquare-i].piece.White )
+                            {
+                                LegalMoves.add(new Point(xSquare+i,ySquare-i));
+                                break;
+                            }
+                            
+                        } catch (Exception n) {
+                            // System.err.println(n);
+                        }                        
+                    }
+                    // checks down left diagonal
+                    for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
+                    {
+                        try {
+                            if(!Board[xSquare-i][ySquare+i].isOcupied)
+                            {
+                                LegalMoves.add(new Point(xSquare-i,ySquare+i));
+                            }
+                            else if(Board[xSquare+i][ySquare+i].isOcupied && !Board[xSquare-i][ySquare+i].piece.White )
+                            {
+                                LegalMoves.add(new Point(xSquare-i,ySquare+i));
+                                break;
+                            }
+                            
+                        } catch (Exception n) {
+                            // System.err.println(n);
+                        }                        
+                    }
+                    // down rigth diagonal check
+                    for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
+                    {
+                        try {
+                            if(!Board[xSquare+i][ySquare+i].isOcupied)
+                            {
+                                LegalMoves.add(new Point(xSquare+i,ySquare+i));
+                            }
+                            else if(Board[xSquare+i][ySquare+i].isOcupied && !Board[xSquare+i][ySquare+i].piece.White )
+                            {
+                                LegalMoves.add(new Point(xSquare+i,ySquare+i));
+                                break;
+                            }
+                            
+                        } catch (Exception n) {
+                            // System.err.println(n);
+                        }                        
+                    }
                     break;
 
                 case Piece.ROOK:
                     // TODO check straight lines
                     break;
 
+                case Piece.QUEEN:
+                    // TODO diagonals and straight aways
+                    break; 
+
                 case Piece.KING:
                     // TODO all squares around king by one
                     break;
 
-                case Piece.QUEEN:
-                    // TODO diagonals and straight aways
-                    break;  
+                 
                             
             }
 
@@ -411,35 +500,57 @@ public class Game implements MouseListener{
 
     private void UpdateBoard(int oldXPos,int oldYPos, int newXPos, int newYPos)
     {
-        // switch(Board[oldXPos][oldYPos].piece.Type){
-        //     case Piece.PAWN:
-        //         Board[]
-        //         break;
+        switch(Board[oldXPos][oldYPos].piece.Type){
+            case Piece.PAWN:
+                Board[newXPos][newYPos].piece.Type = Piece.PAWN;
+                for(Pawn i : WhitePawns)
+                {
+                    if(i.xPos == newXPos && i.yPos == newYPos)
+                        Board[newXPos][newYPos].piece = i;                    
+                }
+                break;
 
-        //     case Piece.KNIGHT:
-                
-        //         break;
+            case Piece.KNIGHT:
+                Board[newXPos][newYPos].piece.Type = Piece.KNIGHT;
+                for(Knight i : WhiteKnight)
+                {
+                    if(i.xPos == newXPos && i.yPos == newYPos)
+                        Board[newXPos][newYPos].piece = i;                    
+                }
+                break;
 
-        //     case Piece.BISHOP:
-        //         break;
+            case Piece.BISHOP:
+                Board[newXPos][newYPos].piece.Type = Piece.BISHOP;
+                for(Bishop i : WhiteBishop)
+                {
+                    if(i.xPos == newXPos && i.yPos == newYPos)
+                        Board[newXPos][newYPos].piece = i;                    
+                }
+                break;
 
-        //     case Piece.ROOK:
-        //         break;
-
-        //     case Piece.KING:
-        //         break;
-
-        //     case Piece.QUEEN:
-        //         break;  
-                        
-        // }
-        for(int i = 0; i < 8; i++)
-        {
-            if(WhitePawns[i].xPos == newXPos && WhitePawns[i].yPos == newYPos)
-                Board[newXPos][newYPos].piece = WhitePawns[i];
-
+            case Piece.ROOK:
+                Board[newXPos][newYPos].piece.Type = Piece.ROOK;
+                for(Rook i : WhiteRook)
+                {
+                    if(i.xPos == newXPos && i.yPos == newYPos)
+                        Board[newXPos][newYPos].piece = i;                    
+                }
+                break;
             
+            case Piece.QUEEN:
+                Board[newXPos][newYPos].piece.Type = Piece.QUEEN;
+                Board[newXPos][newYPos].piece = WhiteQueen;
+                break; 
+
+            case Piece.KING:
+                Board[newXPos][newYPos].piece.Type = Piece.KING;
+                Board[newXPos][newYPos].piece = WhiteKing;
+                break;
+
+             
+                        
         }
+        
         Board[newXPos][newYPos].Type = Piece.PAWN;
         // Board[newXPos][newXPos].piece = new Piece();
 
@@ -468,6 +579,7 @@ public class Game implements MouseListener{
         {
             this.isOcupied = isOcupied;
             this.piece = piece;
+            this.Type = piece.Type;
 
             if((this.piece.xPos+this.piece.yPos)%2 == 0)
                 isWhite = true;
