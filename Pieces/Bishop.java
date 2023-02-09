@@ -31,6 +31,6 @@ public class Bishop extends Piece {
         }
         this.White = White;
 
-        // Type = Piece.BISHOP;
+        Type = Piece.BISHOP;
     }
 }
