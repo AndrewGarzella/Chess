@@ -339,7 +339,7 @@ public class Game implements MouseListener{
                             }
                             
                         } catch (Exception n) {
-                            // System.err.println(n);
+                            break;
                         }                        
                     }
                     // checks up right digonal
@@ -361,7 +361,7 @@ public class Game implements MouseListener{
                             }
                             
                         } catch (Exception n) {
-                            // System.err.println(n);
+                            break;
                         }                        
                     }
                     // checks down left diagonal
@@ -383,7 +383,7 @@ public class Game implements MouseListener{
                             }
                             
                         } catch (Exception n) {
-                            // System.err.println(n);
+                            break;
                         }                        
                     }
                     // down rigth diagonal check
@@ -405,32 +405,103 @@ public class Game implements MouseListener{
                             }
                             
                         } catch (Exception n) {
-                            // System.err.println(n);
+                            break;
                         }                        
                     }
                     break;
 
                 case Piece.ROOK:
                     // TODO check straight lines
-                    // checks staright up
-                    // for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
-                    // {
-                    //     try {
-                    //         if(!Board[xSquare+i][ySquare+i].isOcupied)
-                    //         {
-                    //             LegalMoves.add(new Point(xSquare+i,ySquare+i));
-                    //         }
-                    //         else if(Board[xSquare+i][ySquare+i].isOcupied && !Board[xSquare+i][ySquare+i].piece.White )
-                    //         {
-                    //             LegalMoves.add(new Point(xSquare+i,ySquare+i));
-                    //             break;
-                    //         }
+                    // checks staright left
+                    for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
+                    {
+                        try {
+                            if(!Board[xSquare][ySquare-i].isOcupied)
+                            {
+                                LegalMoves.add(new Point(xSquare,ySquare-i));
+                            }
+                            else if(Board[xSquare][ySquare-i].isOcupied && !Board[xSquare][ySquare+i].piece.White )
+                            {
+                                LegalMoves.add(new Point(xSquare,ySquare-i));
+                                break;
+                            }
+                            else if(Board[xSquare][ySquare-i].isOcupied)
+                            {
+                                break;
+                            }
                             
-                    //     } catch (Exception n) {
-                    //         // System.err.println(n);
-                    //     }                        
-                    // }                   
-                    // break;
+                        } catch (Exception n) {
+                            break;
+                        }                        
+                    }
+                    // checks staright Right
+                    for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
+                    {
+                        try {
+                            if(!Board[xSquare][ySquare+i].isOcupied)
+                            {
+                                LegalMoves.add(new Point(xSquare,ySquare+i));
+                            }
+                            else if(Board[xSquare][ySquare+i].isOcupied && !Board[xSquare][ySquare+i].piece.White )
+                            {
+                                LegalMoves.add(new Point(xSquare,ySquare+i));
+                                break;
+                            }
+                            else if(Board[xSquare][ySquare+i].isOcupied)
+                            {
+                                break;
+                            } 
+                            
+                        } catch (Exception n) {
+                            break;
+                        }                        
+                    }
+                    // checks staright Up
+                    for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
+                    {
+                        try {
+                            if(!Board[xSquare-i][ySquare].isOcupied)
+                            {
+                                LegalMoves.add(new Point(xSquare-i,ySquare));
+                            }
+                            else if(Board[xSquare-i][ySquare].isOcupied && !Board[xSquare-i][ySquare].piece.White )
+                            {
+                                LegalMoves.add(new Point(xSquare-i,ySquare));
+                                break;
+                            }
+                            else if(Board[xSquare-i][ySquare].isOcupied)
+                            {
+                                break;
+                            }
+                            
+                        } catch (Exception n) {
+                            break;
+                        }                        
+                    }                   
+                    // checks staright Down
+                    for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
+                    {
+                        try {
+                            if(!Board[xSquare+i][ySquare].isOcupied)
+                            {
+                                LegalMoves.add(new Point(xSquare+i,ySquare));
+                            }
+                            else if(Board[xSquare+i][ySquare].isOcupied && !Board[xSquare+i][ySquare].piece.White )
+                            {
+                                LegalMoves.add(new Point(xSquare+i,ySquare));
+                                break;
+                            }
+                            else if(Board[xSquare+i][ySquare].isOcupied)
+                            {
+                                break;
+                            }
+                            
+                        } catch (Exception n) {
+                            break;
+                        }                        
+                    }
+                    
+                    break;
 
                 case Piece.QUEEN:
                     // TODO diagonals and straight aways
