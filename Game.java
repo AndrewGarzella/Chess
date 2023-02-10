@@ -197,18 +197,8 @@ public class Game implements MouseListener{
     frame.setVisible(true);
     }
     
-    // public static void SetBoard(boolean[][] Board)
-    // {
-    //     for(int i = 0; i < 8; i++)
-    //     {
-    //         for(int j = 0; j < 8; j++)
-    //         {
-    //             if(!(j == 0 || j == 1 || j == 6 || j == 7))
-    //                 Board[i][j] = new Square(false);
-    //         }
-    //     }
-    // }
 
+    // Point SelectedPiece = new Point();
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -227,8 +217,6 @@ public class Game implements MouseListener{
         {
             for(int j = 0; j < 8; j++)
             {
-                // if(Board[i][j].piece.isSelected)
-                //     Board[i][j].piece.isSelected = false;
                 // +8 for the boarder of the screen, +30 for the top of the screan
                 if(((x > (i*64)+8 && x <= ((i+1)*64)+8) && (y > (j*64)+30 && y <= ((j+1)*64)+30)) && Board[i][j].isOcupied)  
                 {
@@ -259,18 +247,28 @@ public class Game implements MouseListener{
         // show a move
         if(isInPiece)
         {
+            // make sure only selected peice is one you are trying to move
+            for(int i = 0; i < 8; i++)
+            {
+                for(int j = 0; j < 8; j++)
+                {
+                    try {
+                        if(Board[i][j].piece.isSelected && (Board[i][j].piece.xPos != Board[xSquare][ySquare].piece.xPos || Board[i][j].piece.yPos != Board[xSquare][ySquare].piece.yPos))
+                            Board[i][j].piece.isSelected = false; 
+                    } catch (Exception n) {
+
+                    }
+                       
+                }
+                            
+            }
+
             // find what piece is in that square
             // piece is in squar Board[xSquare][ySquare]
             // TODO then find all legal moves
             // IMPORTANT points are not ints they must be casted (For futer andrew)
             ArrayList<Point> LegalMoves = new ArrayList<Point>();
-
-            // resets legalmoves 
-            // for(Point i : LegalMoves)
-            // {
-            //     LegalMoves.remove(i);
-            // }
-            
+                        
             // switch checks what kind of piece is in the square then each case is what moves are legal
             // legal moves get added to LegalMoves ArrayList in the form of points
             switch(Board[xSquare][ySquare].piece.Type){
@@ -335,6 +333,10 @@ public class Game implements MouseListener{
                                 LegalMoves.add(new Point(xSquare-i,ySquare-i));
                                 break;
                             }
+                            else if(Board[xSquare+i][ySquare-i].isOcupied)
+                            {
+                                break;
+                            }
                             
                         } catch (Exception n) {
                             // System.err.println(n);
@@ -351,6 +353,10 @@ public class Game implements MouseListener{
                             else if(Board[xSquare+i][ySquare-i].isOcupied && !Board[xSquare+i][ySquare-i].piece.White )
                             {
                                 LegalMoves.add(new Point(xSquare+i,ySquare-i));
+                                break;
+                            }
+                            else if(Board[xSquare+i][ySquare-i].isOcupied)
+                            {
                                 break;
                             }
                             
@@ -371,6 +377,10 @@ public class Game implements MouseListener{
                                 LegalMoves.add(new Point(xSquare-i,ySquare+i));
                                 break;
                             }
+                            else if(Board[xSquare+i][ySquare+i].isOcupied)
+                            {
+                                break;
+                            }
                             
                         } catch (Exception n) {
                             // System.err.println(n);
@@ -389,6 +399,10 @@ public class Game implements MouseListener{
                                 LegalMoves.add(new Point(xSquare+i,ySquare+i));
                                 break;
                             }
+                            else if(Board[xSquare+i][ySquare+i].isOcupied)
+                            {
+                                break;
+                            }
                             
                         } catch (Exception n) {
                             // System.err.println(n);
@@ -398,7 +412,25 @@ public class Game implements MouseListener{
 
                 case Piece.ROOK:
                     // TODO check straight lines
-                    break;
+                    // checks staright up
+                    // for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
+                    // {
+                    //     try {
+                    //         if(!Board[xSquare+i][ySquare+i].isOcupied)
+                    //         {
+                    //             LegalMoves.add(new Point(xSquare+i,ySquare+i));
+                    //         }
+                    //         else if(Board[xSquare+i][ySquare+i].isOcupied && !Board[xSquare+i][ySquare+i].piece.White )
+                    //         {
+                    //             LegalMoves.add(new Point(xSquare+i,ySquare+i));
+                    //             break;
+                    //         }
+                            
+                    //     } catch (Exception n) {
+                    //         // System.err.println(n);
+                    //     }                        
+                    // }                   
+                    // break;
 
                 case Piece.QUEEN:
                     // TODO diagonals and straight aways
@@ -474,9 +506,10 @@ public class Game implements MouseListener{
         // if isInPiece is still false need to remove old indicators if they are on screan
         else // isInPeice = false && isInIndicator == false
         {  
-
+            // deselect the all pieces
+            
             // if mouse position is inside of a indicated square hide the indicators
-             
+
             HideIndicators();
         }
 
