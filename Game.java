@@ -535,49 +535,58 @@ public class Game implements MouseListener{
     {
         switch(Board[oldXPos][oldYPos].piece.Type){
             case Piece.PAWN:
-                Board[newXPos][newYPos].piece.Type = Piece.PAWN;
                 for(Pawn i : WhitePawns)
                 {
                     if(i.xPos == newXPos && i.yPos == newYPos)
-                        Board[newXPos][newYPos].piece = i;                    
+                    {
+                        Board[newXPos][newYPos].piece = i;
+                        Board[newXPos][newYPos].piece.Type = Piece.PAWN;
+                    }
                 }
                 break;
 
             case Piece.KNIGHT:
-                Board[newXPos][newYPos].piece.Type = Piece.KNIGHT;
                 for(Knight i : WhiteKnight)
                 {
                     if(i.xPos == newXPos && i.yPos == newYPos)
-                        Board[newXPos][newYPos].piece = i;                    
+                    {
+                        Board[newXPos][newYPos].piece = i;
+                        Board[newXPos][newYPos].piece.Type = Piece.KNIGHT;
+                    }                  
                 }
                 break;
 
             case Piece.BISHOP:
-                Board[newXPos][newYPos].piece.Type = Piece.BISHOP;
                 for(Bishop i : WhiteBishop)
                 {
                     if(i.xPos == newXPos && i.yPos == newYPos)
-                        Board[newXPos][newYPos].piece = i;                    
+                    {
+                        Board[newXPos][newYPos].piece = i;
+                        Board[newXPos][newYPos].piece.Type = Piece.BISHOP;
+                    } 
+                        
                 }
                 break;
 
             case Piece.ROOK:
-                Board[newXPos][newYPos].piece.Type = Piece.ROOK;
                 for(Rook i : WhiteRook)
                 {
                     if(i.xPos == newXPos && i.yPos == newYPos)
-                        Board[newXPos][newYPos].piece = i;                    
+                    {
+                        Board[newXPos][newYPos].piece = i;
+                        Board[newXPos][newYPos].piece.Type = Piece.ROOK;
+                    }                    
                 }
                 break;
             
             case Piece.QUEEN:
+                Board[newXPos][newYPos].piece = WhiteQueen;    
                 Board[newXPos][newYPos].piece.Type = Piece.QUEEN;
-                Board[newXPos][newYPos].piece = WhiteQueen;
                 break; 
 
             case Piece.KING:
-                Board[newXPos][newYPos].piece.Type = Piece.KING;
                 Board[newXPos][newYPos].piece = WhiteKing;
+                Board[newXPos][newYPos].piece.Type = Piece.KING;
                 break;
 
              

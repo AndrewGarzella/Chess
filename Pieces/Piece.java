@@ -35,6 +35,8 @@ public class Piece  {
         label.setBounds(xPos*64,yPos*64,icon.getIconWidth(),icon.getIconHeight());
     }
 
+    
+
     // // gets rid of all data in object
     // public void clear()
     // {
