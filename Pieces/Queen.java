@@ -31,6 +31,6 @@ public class Queen extends Piece {
         }
         this.White = White;
 
-        // Type = Piece.QUEEN;
+        Type = Piece.QUEEN;
     }
 }
