@@ -31,6 +31,6 @@ public class Knight extends Piece {
         }
         this.White = White;
 
-        // Type = Piece.KNIGHT;
+        Type = Piece.KNIGHT;
     }
 }
