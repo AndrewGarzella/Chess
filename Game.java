@@ -361,7 +361,7 @@ public class Game implements MouseListener{
 
                     }
                     try{
-                        if(!Board[xSquare-1][ySquare-2].isOcupied || !Board[xSquare-1][ySquare-2].piece.White)
+                        if(!Board[xSquare+1][ySquare-2].isOcupied || !Board[xSquare+1][ySquare-2].piece.White)
                             LegalMoves.add(new Point(xSquare+1,ySquare-2));
                         
                     } catch (Exception n){
