@@ -18,7 +18,6 @@ public class Piece  {
     final public static int KING = 5;
     final public static int INDICATOR = 6;
 
-
     public boolean isSelected = false;
     public boolean Alive = true;
     public int xPos, yPos;
