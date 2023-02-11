@@ -19,6 +19,7 @@ public class Piece  {
     final public static int INDICATOR = 6;
 
     public boolean isSelected = false;
+    public boolean isFirstMove = true;
     public boolean Alive = true;
     public int xPos, yPos;
     public Boolean White;

@@ -1,4 +1,7 @@
 package Chess;
+/*
+ * Rooks and queens indicators dont pop up on black pieces for straight line checks
+ */
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -12,10 +15,10 @@ import java.awt.Point;
 import Chess.Pieces.*;
 
 public class Game implements MouseListener{
-    public JFrame frame;
-    public JPanel panel;
-    public JLayeredPane layeredPane;
-    // public boolean[][] Board = new boolean[8][8];
+    private JFrame frame;
+    private JPanel panel;
+    private JLayeredPane layeredPane;
+    private int Trun = 0;
     private Square[][] Board = new Square[8][8];
     Indicator[][] Indicators = new Indicator[8][8];
     
@@ -274,6 +277,11 @@ public class Game implements MouseListener{
             switch(Board[xSquare][ySquare].piece.Type){
                 case Piece.PAWN:
                     // TODO pawn moves twice on turn 1
+                    if(Board[xSquare][ySquare].piece.White && Board[xSquare][ySquare].piece.isFirstMove)
+                    {
+                        if(!Board[xSquare][ySquare-2].isOcupied)
+                            LegalMoves.add(new Point(xSquare, ySquare-2));
+                    }
                     if(Board[xSquare][ySquare].piece.White)
                     {
                         // checks if square ahead of pawn has a piece in it as white
@@ -867,6 +875,7 @@ public class Game implements MouseListener{
 
     private void UpdateBoard(int oldXPos,int oldYPos, int newXPos, int newYPos)
     {
+        Board[oldXPos][oldYPos].piece.isFirstMove = false;
         switch(Board[oldXPos][oldYPos].piece.Type){
             case Piece.PAWN:
                 for(Pawn i : WhitePawns)
