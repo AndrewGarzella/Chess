@@ -279,13 +279,14 @@ public class Game implements MouseListener{
             switch(Board[xSquare][ySquare].piece.Type){
                 case Piece.PAWN:
                     // TODO pawn moves twice on turn 1
-                    if(Board[xSquare][ySquare].piece.White && Board[xSquare][ySquare].piece.isFirstMove)
-                    {
-                        if(!Board[xSquare][ySquare-2].isOcupied)
-                            LegalMoves.add(new Point(xSquare, ySquare-2));
-                    }
+                    
                     if(Board[xSquare][ySquare].piece.White)
                     {
+                        if(Board[xSquare][ySquare].piece.isFirstMove)
+                        {
+                            if(!Board[xSquare][ySquare-2].isOcupied)
+                                LegalMoves.add(new Point(xSquare, ySquare-2));
+                        }
                         // checks if square ahead of pawn has a piece in it as white
                         if(!Board[xSquare][ySquare-1].isOcupied)
                             LegalMoves.add(new Point(xSquare,ySquare-1));
@@ -303,7 +304,7 @@ public class Game implements MouseListener{
                     // ONLY white pieces for now
                     if(!Board[xSquare][ySquare].piece.White)
                     {
-                        if(!Board[xSquare][ySquare].piece.White && Board[xSquare][ySquare].piece.isFirstMove)
+                        if(Board[xSquare][ySquare].piece.isFirstMove)
                         {
                             if(!Board[xSquare][ySquare+2].isOcupied)
                                 LegalMoves.add(new Point(xSquare, ySquare+2));
@@ -314,12 +315,12 @@ public class Game implements MouseListener{
 
                         // checks if diagonals are ocupied by a black piece
                         try{
-                            if(Board[xSquare-1][ySquare+1].isOcupied && !Board[xSquare-1][ySquare+1].piece.White)
-                                LegalMoves.add(new Point(xSquare-1,ySquare-1));
-                            if(Board[xSquare+1][ySquare+1].isOcupied && !Board[xSquare+1][ySquare+1].piece.White)
-                                LegalMoves.add(new Point(xSquare+1,ySquare-1));
-                        } catch(Exception i){ // cant use e because mouseclicked passes e in 
-                            // System.out.println(i);
+                            if(Board[xSquare-1][ySquare+1].isOcupied && Board[xSquare-1][ySquare+1].piece.White)
+                                LegalMoves.add(new Point(xSquare-1,ySquare+1));
+                            if(Board[xSquare+1][ySquare+1].isOcupied && Board[xSquare+1][ySquare+1].piece.White)
+                                LegalMoves.add(new Point(xSquare+1,ySquare+1));
+                        } catch(Exception n){ // cant use e because mouseclicked passes e in 
+                            // System.out.println(n);
                         }
 
                     }
@@ -330,64 +331,51 @@ public class Game implements MouseListener{
 
                 case Piece.KNIGHT:
                     // need to check square (Starting form most left)
+                    
                     // points (-2 +1), (-2 -1)
                     try{
-                        if(!Board[xSquare-2][ySquare+1].isOcupied || !Board[xSquare-2][ySquare+1].piece.White)
+                        if(!Board[xSquare-2][ySquare+1].isOcupied || !(Board[xSquare-2][ySquare+1].piece.White == Board[xSquare][ySquare].piece.White))
                             LegalMoves.add(new Point(xSquare-2,ySquare+1));
                         
-                    } catch (Exception n){
-
-                    }
+                    } catch (Exception n){}
                     try{
-                        if(!Board[xSquare-2][ySquare-1].isOcupied || !Board[xSquare-2][ySquare-1].piece.White)
+                        if(!Board[xSquare-2][ySquare-1].isOcupied || !(Board[xSquare-2][ySquare-1].piece.White == Board[xSquare][ySquare].piece.White))
                             LegalMoves.add(new Point(xSquare-2,ySquare-1));
                         
-                    } catch (Exception n){
-
-                    }
+                    } catch (Exception n){}
                     // -1 +2. -1 -2
                     try{
-                        if(!Board[xSquare-1][ySquare+2].isOcupied || !Board[xSquare-1][ySquare+2].piece.White)
+                        if(!Board[xSquare-1][ySquare+2].isOcupied || !(Board[xSquare-1][ySquare+2].piece.White == Board[xSquare][ySquare].piece.White))
                             LegalMoves.add(new Point(xSquare-1,ySquare+2));
                         
                     } catch (Exception n){}
                     try{
-                        if(!Board[xSquare-1][ySquare-2].isOcupied || !Board[xSquare-1][ySquare-2].piece.White)
+                        if(!Board[xSquare-1][ySquare-2].isOcupied || !(Board[xSquare-1][ySquare-2].piece.White == Board[xSquare][ySquare].piece.White))
                             LegalMoves.add(new Point(xSquare-1,ySquare-2));
                         
-                    } catch (Exception n){
-
-                    }
+                    } catch (Exception n){}
                     // +1 +2, +1 -2, 
                     try{
-                        if(!Board[xSquare+1][ySquare+2].isOcupied || !Board[xSquare+1][ySquare+2].piece.White)
+                        if(!Board[xSquare+1][ySquare+2].isOcupied || !(Board[xSquare+1][ySquare+2].piece.White == Board[xSquare][ySquare].piece.White))
                             LegalMoves.add(new Point(xSquare+1,ySquare+2));
                         
-                    } catch (Exception n){
-
-                    }
+                    } catch (Exception n){}
                     try{
-                        if(!Board[xSquare+1][ySquare-2].isOcupied || !Board[xSquare+1][ySquare-2].piece.White)
+                        if(!Board[xSquare+1][ySquare-2].isOcupied || !(Board[xSquare+1][ySquare-2].piece.White == Board[xSquare][ySquare].piece.White))
                             LegalMoves.add(new Point(xSquare+1,ySquare-2));
                         
-                    } catch (Exception n){
-
-                    }
+                    } catch (Exception n){}
                     // +2 +1, +2 -1, 
                     try{
-                        if(!Board[xSquare+2][ySquare+1].isOcupied || !Board[xSquare+2][ySquare+1].piece.White)
+                        if(!Board[xSquare+2][ySquare+1].isOcupied || !(Board[xSquare+2][ySquare+1].piece.White == Board[xSquare][ySquare].piece.White))
                             LegalMoves.add(new Point(xSquare+2,ySquare+1));
                         
-                    } catch (Exception n){
-
-                    }
+                    } catch (Exception n){}
                     try{
-                        if(!Board[xSquare+2][ySquare-1].isOcupied || !Board[xSquare+2][ySquare-1].piece.White)
+                        if(!Board[xSquare+2][ySquare-1].isOcupied || !(Board[xSquare+2][ySquare-1].piece.White == Board[xSquare][ySquare].piece.White))
                             LegalMoves.add(new Point(xSquare+2,ySquare-1));
                         
-                    } catch (Exception n){
-
-                    }
+                    } catch (Exception n){}
                     break;
 
                 case Piece.BISHOP:
@@ -399,7 +387,7 @@ public class Game implements MouseListener{
                             {
                                 LegalMoves.add(new Point(xSquare-i,ySquare-i));
                             }
-                            else if(!Board[xSquare-i][ySquare-i].piece.White)
+                            else if(!(Board[xSquare-i][ySquare-i].piece.White == Board[xSquare][ySquare].piece.White))
                             {
                                 LegalMoves.add(new Point(xSquare-i,ySquare-i));
                                 break;
@@ -421,7 +409,7 @@ public class Game implements MouseListener{
                             {
                                 LegalMoves.add(new Point(xSquare+i,ySquare-i));
                             }
-                            else if(!Board[xSquare+i][ySquare-i].piece.White )
+                            else if(!(Board[xSquare+i][ySquare-i].piece.White == Board[xSquare][ySquare].piece.White))
                             {
                                 LegalMoves.add(new Point(xSquare+i,ySquare-i));
                                 break;
@@ -443,7 +431,7 @@ public class Game implements MouseListener{
                             {
                                 LegalMoves.add(new Point(xSquare-i,ySquare+i));
                             }
-                            else if(!Board[xSquare-i][ySquare+i].piece.White )
+                            else if(!(Board[xSquare-i][ySquare+i].piece.White == Board[xSquare][ySquare].piece.White))
                             {
                                 LegalMoves.add(new Point(xSquare-i,ySquare+i));
                                 break;
@@ -465,7 +453,7 @@ public class Game implements MouseListener{
                             {
                                 LegalMoves.add(new Point(xSquare+i,ySquare+i));
                             }
-                            else if(!Board[xSquare+i][ySquare+i].piece.White )
+                            else if(!(Board[xSquare+i][ySquare+i].piece.White == Board[xSquare][ySquare].piece.White))
                             {
                                 LegalMoves.add(new Point(xSquare+i,ySquare+i));
                                 break;
@@ -909,25 +897,54 @@ public class Game implements MouseListener{
                 break;
 
             case Piece.KNIGHT:
-                for(Knight i : WhiteKnight)
+                if(Board[oldXPos][oldYPos].piece.White)
                 {
-                    if(i.xPos == newXPos && i.yPos == newYPos)
+                    for(Knight i : WhiteKnight)
                     {
-                        Board[newXPos][newYPos].piece = i;
-                        Board[newXPos][newYPos].piece.Type = Piece.KNIGHT;
-                    }                  
+                        if(i.xPos == newXPos && i.yPos == newYPos)
+                        {
+                            Board[newXPos][newYPos].piece = i;
+                            Board[newXPos][newYPos].piece.Type = Piece.KNIGHT;
+                        }                  
+                    }
+                }
+                else
+                {   
+                    for(Knight i : BlackKnight)
+                    {
+                        if(i.xPos == newXPos && i.yPos == newYPos)
+                        {
+                            Board[newXPos][newYPos].piece = i;
+                            Board[newXPos][newYPos].piece.Type = Piece.KNIGHT;
+                        }                  
+                    }
                 }
                 break;
 
             case Piece.BISHOP:
-                for(Bishop i : WhiteBishop)
+                if(Board[oldXPos][oldYPos].piece.White)
                 {
-                    if(i.xPos == newXPos && i.yPos == newYPos)
+                    for(Bishop i : WhiteBishop)
                     {
-                        Board[newXPos][newYPos].piece = i;
-                        Board[newXPos][newYPos].piece.Type = Piece.BISHOP;
-                    } 
-                        
+                        if(i.xPos == newXPos && i.yPos == newYPos)
+                        {
+                            Board[newXPos][newYPos].piece = i;
+                            Board[newXPos][newYPos].piece.Type = Piece.BISHOP;
+                        } 
+                            
+                    }
+                }
+                else
+                {
+                    for(Bishop i : BlackBishop)
+                    {
+                        if(i.xPos == newXPos && i.yPos == newYPos)
+                        {
+                            Board[newXPos][newYPos].piece = i;
+                            Board[newXPos][newYPos].piece.Type = Piece.BISHOP;
+                        } 
+                            
+                    }
                 }
                 break;
 
