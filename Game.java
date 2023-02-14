@@ -20,7 +20,7 @@ public class Game implements MouseListener{
     private JFrame frame;
     private JPanel panel;
     private JLayeredPane layeredPane;
-    private int Trun = 0;
+    private int Turn = 0;
     private Square[][] Board = new Square[8][8];
     Indicator[][] Indicators = new Indicator[8][8];
     
@@ -225,10 +225,20 @@ public class Game implements MouseListener{
                 // +8 for the boarder of the screen, +30 for the top of the screan
                 if(((x > (i*64)+8 && x <= ((i+1)*64)+8) && (y > (j*64)+30 && y <= ((j+1)*64)+30)) && Board[i][j].isOcupied)  
                 {
-                    isInPiece = true;
+                    
                     xSquare = i;
                     ySquare = j;
-                    Board[i][j].piece.isSelected = true;
+                    if((Turn % 2 == 0) && Board[i][j].piece.White)
+                    {
+                        Board[i][j].piece.isSelected = true;
+                        isInPiece = true;
+                    }
+                    
+                    if((Turn % 2 == 1) && !Board[i][j].piece.White)
+                    {
+                        Board[i][j].piece.isSelected = true;
+                        isInPiece = true;
+                    }
                     HideIndicators();
 
                 }
@@ -470,7 +480,7 @@ public class Game implements MouseListener{
                     break;
 
                 case Piece.ROOK:
-                    // checks staright left
+                    // checks staright Up
                     for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
                     {
                         try {
@@ -478,7 +488,7 @@ public class Game implements MouseListener{
                             {
                                 LegalMoves.add(new Point(xSquare,ySquare-i));
                             }
-                            else if(!Board[xSquare][ySquare+i].piece.White )
+                            else if(!(Board[xSquare][ySquare-i].piece.White  == Board[xSquare][ySquare].piece.White))
                             {
                                 LegalMoves.add(new Point(xSquare,ySquare-i));
                                 break;
@@ -492,7 +502,7 @@ public class Game implements MouseListener{
                             break;
                         }                        
                     }
-                    // checks staright Right
+                    // checks staright Down
                     for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
                     {
                         try {
@@ -500,7 +510,7 @@ public class Game implements MouseListener{
                             {
                                 LegalMoves.add(new Point(xSquare,ySquare+i));
                             }
-                            else if(!Board[xSquare][ySquare+i].piece.White )
+                            else if(!(Board[xSquare][ySquare+i].piece.White == Board[xSquare][ySquare].piece.White))
                             {
                                 LegalMoves.add(new Point(xSquare,ySquare+i));
                                 break;
@@ -514,7 +524,7 @@ public class Game implements MouseListener{
                             break;
                         }                        
                     }
-                    // checks staright Up
+                    // checks staright Left
                     for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
                     {
                         try {
@@ -522,7 +532,7 @@ public class Game implements MouseListener{
                             {
                                 LegalMoves.add(new Point(xSquare-i,ySquare));
                             }
-                            else if(!Board[xSquare-i][ySquare].piece.White )
+                            else if(!(Board[xSquare-i][ySquare].piece.White == Board[xSquare][ySquare].piece.White))
                             {
                                 LegalMoves.add(new Point(xSquare-i,ySquare));
                                 break;
@@ -536,7 +546,7 @@ public class Game implements MouseListener{
                             break;
                         }                        
                     }                   
-                    // checks staright Down
+                    // checks staright Right
                     for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
                     {
                         try {
@@ -544,7 +554,7 @@ public class Game implements MouseListener{
                             {
                                 LegalMoves.add(new Point(xSquare+i,ySquare));
                             }
-                            else if(!Board[xSquare+i][ySquare].piece.White )
+                            else if(!(Board[xSquare+i][ySquare].piece.White == Board[xSquare][ySquare].piece.White))
                             {
                                 LegalMoves.add(new Point(xSquare+i,ySquare));
                                 break;
@@ -570,7 +580,7 @@ public class Game implements MouseListener{
                             {
                                 LegalMoves.add(new Point(xSquare-i,ySquare-i));
                             }
-                            else if(!Board[xSquare-i][ySquare-i].piece.White )
+                            else if(!(Board[xSquare-i][ySquare-i].piece.White == Board[xSquare][ySquare].piece.White))
                             {
                                 LegalMoves.add(new Point(xSquare-i,ySquare-i));
                                 break;
@@ -592,7 +602,7 @@ public class Game implements MouseListener{
                             {
                                 LegalMoves.add(new Point(xSquare+i,ySquare-i));
                             }
-                            else if(!Board[xSquare+i][ySquare-i].piece.White )
+                            else if(!(Board[xSquare+i][ySquare-i].piece.White == Board[xSquare][ySquare].piece.White))
                             {
                                 LegalMoves.add(new Point(xSquare+i,ySquare-i));
                                 break;
@@ -614,7 +624,7 @@ public class Game implements MouseListener{
                             {
                                 LegalMoves.add(new Point(xSquare-i,ySquare+i));
                             }
-                            else if(!Board[xSquare-i][ySquare+i].piece.White )
+                            else if(!(Board[xSquare-i][ySquare+i].piece.White == Board[xSquare][ySquare].piece.White))
                             {
                                 LegalMoves.add(new Point(xSquare-i,ySquare+i));
                                 break;
@@ -636,7 +646,7 @@ public class Game implements MouseListener{
                             {
                                 LegalMoves.add(new Point(xSquare+i,ySquare+i));
                             }
-                            else if(!Board[xSquare+i][ySquare+i].piece.White )
+                            else if(!(Board[xSquare+i][ySquare+i].piece.White == Board[xSquare][ySquare].piece.White))
                             {
                                 LegalMoves.add(new Point(xSquare+i,ySquare+i));
                                 break;
@@ -658,7 +668,7 @@ public class Game implements MouseListener{
                             {
                                 LegalMoves.add(new Point(xSquare,ySquare-i));
                             }
-                            else if(!Board[xSquare][ySquare+i].piece.White )
+                            else if(!(Board[xSquare][ySquare+i].piece.White == Board[xSquare][ySquare].piece.White))
                             {
                                 LegalMoves.add(new Point(xSquare,ySquare-i));
                                 break;
@@ -680,7 +690,7 @@ public class Game implements MouseListener{
                             {
                                 LegalMoves.add(new Point(xSquare,ySquare+i));
                             }
-                            else if(!Board[xSquare][ySquare+i].piece.White )
+                            else if(!(Board[xSquare][ySquare+i].piece.White == Board[xSquare][ySquare].piece.White))
                             {
                                 LegalMoves.add(new Point(xSquare,ySquare+i));
                                 break;
@@ -702,7 +712,7 @@ public class Game implements MouseListener{
                             {
                                 LegalMoves.add(new Point(xSquare-i,ySquare));
                             }
-                            else if(!Board[xSquare-i][ySquare].piece.White )
+                            else if(!(Board[xSquare-i][ySquare].piece.White == Board[xSquare][ySquare].piece.White))
                             {
                                 LegalMoves.add(new Point(xSquare-i,ySquare));
                                 break;
@@ -724,7 +734,7 @@ public class Game implements MouseListener{
                             {
                                 LegalMoves.add(new Point(xSquare+i,ySquare));
                             }
-                            else if(!Board[xSquare+i][ySquare].piece.White )
+                            else if(!(Board[xSquare+i][ySquare].piece.White == Board[xSquare][ySquare].piece.White))
                             {
                                 LegalMoves.add(new Point(xSquare+i,ySquare));
                                 break;
@@ -949,24 +959,55 @@ public class Game implements MouseListener{
                 break;
 
             case Piece.ROOK:
-                for(Rook i : WhiteRook)
+                if(Board[oldXPos][oldYPos].piece.White)
                 {
-                    if(i.xPos == newXPos && i.yPos == newYPos)
+                    for(Rook i : WhiteRook)
                     {
-                        Board[newXPos][newYPos].piece = i;
-                        Board[newXPos][newYPos].piece.Type = Piece.ROOK;
-                    }                    
+                        if(i.xPos == newXPos && i.yPos == newYPos)
+                        {
+                            Board[newXPos][newYPos].piece = i;
+                            Board[newXPos][newYPos].piece.Type = Piece.ROOK;
+                        }                    
+                    }
+                }
+                else
+                {
+                    for(Rook i : BlackRook)
+                    {
+                        if(i.xPos == newXPos && i.yPos == newYPos)
+                        {
+                            Board[newXPos][newYPos].piece = i;
+                            Board[newXPos][newYPos].piece.Type = Piece.ROOK;
+                        }                    
+                    }
                 }
                 break;
             
             case Piece.QUEEN:
-                Board[newXPos][newYPos].piece = WhiteQueen;    
-                Board[newXPos][newYPos].piece.Type = Piece.QUEEN;
+                if(Board[oldXPos][oldYPos].piece.White)
+                {
+                    Board[newXPos][newYPos].piece = WhiteQueen;    
+                    Board[newXPos][newYPos].piece.Type = Piece.QUEEN;
+                }
+                else
+                {
+                    Board[newXPos][newYPos].piece = BlackQueen;    
+                    Board[newXPos][newYPos].piece.Type = Piece.QUEEN;
+                }
                 break; 
 
             case Piece.KING:
-                Board[newXPos][newYPos].piece = WhiteKing;
+            if(Board[oldXPos][oldYPos].piece.White)
+                {
+                    Board[newXPos][newYPos].piece = WhiteKing;
                 Board[newXPos][newYPos].piece.Type = Piece.KING;
+                }
+                else
+                {
+                    Board[newXPos][newYPos].piece = WhiteKing;
+                    Board[newXPos][newYPos].piece.Type = Piece.KING;
+                }
+                
                 break;
 
              
@@ -982,6 +1023,7 @@ public class Game implements MouseListener{
         // Board[oldXPos][oldYPos]
         // need switch 
         
+        Turn++;
         
         
     }
