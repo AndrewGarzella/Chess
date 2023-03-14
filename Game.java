@@ -9,7 +9,6 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 import javax.swing.*;
-import javax.swing.text.StyledEditorKit.BoldAction;
 
 import java.awt.*;
 import java.awt.Point;
@@ -259,11 +258,10 @@ public class Game implements MouseListener{
                         
         }
         
-        
-        // show a move
         if(isInPiece)
         {
             // make sure only selected peice is one you are trying to move
+            //deselects other pieces        
             for(int i = 0; i < 8; i++)
             {
                 for(int j = 0; j < 8; j++)
@@ -289,7 +287,6 @@ public class Game implements MouseListener{
             // legal moves get added to LegalMoves ArrayList in the form of points
             switch(Board[xSquare][ySquare].piece.Type){
                 case Piece.PAWN:
-                    // TODO pawn moves twice on turn 1
                     
                     if(Board[xSquare][ySquare].piece.White)
                     {
@@ -661,7 +658,7 @@ public class Game implements MouseListener{
                             break;
                         }                        
                     }
-                    // checks staright left
+                    // checks staright Up
                     for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
                     {
                         try {
@@ -669,7 +666,7 @@ public class Game implements MouseListener{
                             {
                                 LegalMoves.add(new Point(xSquare,ySquare-i));
                             }
-                            else if(!(Board[xSquare][ySquare+i].piece.White == Board[xSquare][ySquare].piece.White))
+                            else if(!(Board[xSquare][ySquare-i].piece.White == Board[xSquare][ySquare].piece.White))
                             {
                                 LegalMoves.add(new Point(xSquare,ySquare-i));
                                 break;
@@ -683,7 +680,7 @@ public class Game implements MouseListener{
                             break;
                         }                        
                     }
-                    // checks staright Right
+                    // checks staright Down
                     for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
                     {
                         try {
@@ -705,7 +702,7 @@ public class Game implements MouseListener{
                             break;
                         }                        
                     }
-                    // checks staright Up
+                    // checks staright Left
                     for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
                     {
                         try {
@@ -727,7 +724,7 @@ public class Game implements MouseListener{
                             break;
                         }                        
                     }                   
-                    // checks staright Down
+                    // checks staright Right
                     for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
                     {
                         try {
@@ -803,6 +800,7 @@ public class Game implements MouseListener{
             
     }
 
+        // show moves
         else if(isInVisibleIndicator)
         {
             // finds the piece player is trying to move
@@ -882,6 +880,10 @@ public class Game implements MouseListener{
     private void UpdateBoard(int oldXPos,int oldYPos, int newXPos, int newYPos)
     {
         Board[oldXPos][oldYPos].piece.isFirstMove = false;
+        try {
+            Board[newXPos][newYPos].piece.label.setVisible(false);
+
+        } catch (Exception e) {}
         switch(Board[oldXPos][oldYPos].piece.Type){
             case Piece.PAWN:
                 if(Board[oldXPos][oldYPos].piece.White)
@@ -1016,9 +1018,9 @@ public class Game implements MouseListener{
                         
         }
         
+
         Board[newXPos][newYPos].Type = Piece.PAWN;
         // Board[newXPos][newXPos].piece = new Piece();
-
         Board[oldXPos][oldYPos].piece = null;
         Board[oldXPos][oldYPos].isOcupied = false;
         Board[newXPos][newYPos].isOcupied = true;
