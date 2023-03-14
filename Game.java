@@ -29,12 +29,12 @@ public class Game implements MouseListener{
     Pawn[] BlackPawns = new Pawn[8];
 
     // init kings
-    King WhiteKing = new King(true, 3);
-    King BlackKing = new King(false, 3);
+    King WhiteKing = new King(true, 4);
+    King BlackKing = new King(false, 4);
 
     // init queen
-    Queen WhiteQueen = new Queen(true, 4);
-    Queen BlackQueen = new Queen(false, 4);
+    Queen WhiteQueen = new Queen(true, 3);
+    Queen BlackQueen = new Queen(false, 3);
 
     // init Bishops
     Bishop[] WhiteBishop = {new Bishop(true, 2),new Bishop(true, 5)};
@@ -223,6 +223,14 @@ public class Game implements MouseListener{
             for(int j = 0; j < 8; j++)
             {
                 // +8 for the boarder of the screen, +30 for the top of the screan
+                if(((x > (i*64)+8 && x <= ((i+1)*64)+8) && (y > (j*64)+30 && y <= ((j+1)*64)+30)) && Indicators[i][j].label.isVisible())  
+                {
+                    isInVisibleIndicator = true;
+                    xSquare = i;
+                    ySquare = j;
+                }
+                if(isInVisibleIndicator)
+                    break;
                 if(((x > (i*64)+8 && x <= ((i+1)*64)+8) && (y > (j*64)+30 && y <= ((j+1)*64)+30)) && Board[i][j].isOcupied)  
                 {
                     
@@ -243,14 +251,7 @@ public class Game implements MouseListener{
 
                 }
                 
-                if(((x > (i*64)+8 && x <= ((i+1)*64)+8) && (y > (j*64)+30 && y <= ((j+1)*64)+30)) && Indicators[i][j].label.isVisible())  
-                {
-                    isInVisibleIndicator = true;
-                    xSquare = i;
-                    ySquare = j;
-                }
-                if(isInVisibleIndicator)
-                    break;
+                
                 
             }
             if(isInVisibleIndicator)
@@ -816,6 +817,7 @@ public class Game implements MouseListener{
                         {
                             pieceXPos = i;
                             pieceYPos = j;
+                            
                         }
                     } catch (Exception n) {
                         // System.out.println(n);
