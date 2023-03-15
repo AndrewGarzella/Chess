@@ -756,7 +756,7 @@ public class Game implements MouseListener{
                         try{
                             if(!Board[xSquare+i][ySquare+1].isOcupied)
                                 LegalMoves.add(new Point(xSquare+i,ySquare+1));
-                            else if(!Board[xSquare+i][ySquare+1].isDefended && !Board[xSquare+i][ySquare+1].piece.White)
+                            else if(!Board[xSquare+i][ySquare+1].isDefended && !(Board[xSquare][ySquare].piece.White == Board[xSquare+i][ySquare+1].piece.White))
                                 LegalMoves.add(new Point(xSquare+i,ySquare+1));
                             
                             
@@ -767,7 +767,7 @@ public class Game implements MouseListener{
                         try {
                             if(!Board[xSquare+i][ySquare].isOcupied)
                                 LegalMoves.add(new Point(xSquare+i,ySquare));
-                            else if(!Board[xSquare+i][ySquare].isDefended && !Board[xSquare+i][ySquare].piece.White)
+                            else if(!Board[xSquare+i][ySquare].isDefended && !(Board[xSquare][ySquare].piece.White == Board[xSquare+i][ySquare].piece.White))
                                 LegalMoves.add(new Point(xSquare+i,ySquare));
                         } catch (Exception n) {
                             
@@ -776,7 +776,7 @@ public class Game implements MouseListener{
                         try {
                             if(!Board[xSquare+i][ySquare-1].isOcupied)
                                 LegalMoves.add(new Point(xSquare+i,ySquare-1));
-                            else if(!Board[xSquare+i][ySquare-1].isDefended && !Board[xSquare+i][ySquare-1].piece.White)
+                            else if(!Board[xSquare+i][ySquare-1].isDefended && !(Board[xSquare][ySquare].piece.White == Board[xSquare+i][ySquare-1].piece.White))
                                 LegalMoves.add(new Point(xSquare+i,ySquare-1));
                         } catch (Exception n) {
 
@@ -1002,17 +1002,17 @@ public class Game implements MouseListener{
 
             case Piece.KING:
             if(Board[oldXPos][oldYPos].piece.White)
-                {
-                    Board[newXPos][newYPos].piece = WhiteKing;
+            {
+                Board[newXPos][newYPos].piece = WhiteKing;
                 Board[newXPos][newYPos].piece.Type = Piece.KING;
-                }
-                else
-                {
-                    Board[newXPos][newYPos].piece = WhiteKing;
-                    Board[newXPos][newYPos].piece.Type = Piece.KING;
-                }
+            }
+            else
+            {
+                Board[newXPos][newYPos].piece = BlackKing;
+                Board[newXPos][newYPos].piece.Type = Piece.KING;
+            }
                 
-                break;
+            break;
 
              
                         
