@@ -787,8 +787,10 @@ public class Game implements MouseListener{
                         break;
                     //checks if squares are unocupied
                     //TODO check if squars aren't defened
-                    if(!Board[xSquare+1][ySquare].isOcupied && !Board[xSquare+2][ySquare].isOcupied)
-                        LegalMoves.add(new Point(xSquare+2,ySquare));
+                    if(!Board[xSquare-1][ySquare].isOcupied && !Board[xSquare-2][ySquare].isOcupied)
+                        LegalMoves.add(new Point(xSquare-2,ySquare));
+                    if(!Board[xSquare-1][ySquare].isOcupied && !Board[xSquare-2][ySquare].isOcupied)
+                        LegalMoves.add(new Point(xSquare-2,ySquare));
                         
                     
                     break;
@@ -831,10 +833,8 @@ public class Game implements MouseListener{
                 }
             }
 
-            // calls move funtion for piece
-            Board[pieceXPos][pieceYPos].piece.Move(xSquare, ySquare);
-            // deselects the piece
-            Board[pieceXPos][pieceYPos].piece.isSelected = false;
+            
+            
             // hides the inicators 
             HideIndicators();
             // updates board
@@ -884,8 +884,44 @@ public class Game implements MouseListener{
         }
     }
 
+    private void Castle(int oldXPos,int oldYPos, int newXPos, int newYPos)
+    {
+        Board[oldXPos][oldYPos].piece.Move(newXPos, newYPos);
+        Board[oldXPos][oldYPos].piece.isFirstMove = false;
+        if(Board[oldXPos][oldYPos].piece.White)
+        {
+            for(Rook i : WhiteRook)
+            {
+                if(i.xPos == newXPos && i.yPos == newYPos)
+                    {
+                        Board[newXPos][newYPos].piece = i;
+                        Board[newXPos][newYPos].piece.Type = Piece.ROOK;
+                    }                    
+                }
+            }
+            else
+            {
+                for(Rook i : BlackRook)
+                {
+                    if(i.xPos == newXPos && i.yPos == newYPos)
+                    {
+                        Board[newXPos][newYPos].piece = i;
+                        Board[newXPos][newYPos].piece.Type = Piece.ROOK;
+                    }                    
+                }
+            }
+        Board[oldXPos][oldYPos].piece = null;
+        Board[oldXPos][oldYPos].isOcupied = false;
+        Board[newXPos][newYPos].isOcupied = true;
+    }
+
     private void UpdateBoard(int oldXPos,int oldYPos, int newXPos, int newYPos)
     {
+        // calls move funtion for piece
+        Board[oldXPos][oldYPos].piece.Move(newXPos, newYPos);
+        // deselects the piece
+        Board[oldXPos][oldYPos].piece.isSelected = false;
+
         Board[oldXPos][oldYPos].piece.isFirstMove = false;
         try {
             Board[newXPos][newYPos].piece.label.setVisible(false);
@@ -1015,17 +1051,19 @@ public class Game implements MouseListener{
                 //only true if castling
                 if(newXPos == oldXPos+2)
                 {
-                    Board[7][7].piece.Move(5, 7);
+                    Castle(7,7,5,7);
+                    // Board[7][7].piece.Move(5, 7);
 
-                    Board[7][7].piece = WhiteRook[1];
-                    Board[newXPos][newYPos].piece.Type = Piece.ROOK;
+                    // Board[7][7].piece = WhiteRook[1];
+                    // Board[newXPos][newYPos].piece.Type = Piece.ROOK;
                 }
                 if(newXPos == oldXPos-2)
                 {
-                    Board[0][7].piece.Move(4, 7);
+                    Castle(0,7,3,7);
+                    // Board[0][7].piece.Move(4, 7);
 
-                    Board[0][7].piece = WhiteRook[0];
-                    Board[newXPos][newYPos].piece.Type = Piece.ROOK;
+                    // Board[0][7].piece = WhiteRook[0];
+                    // Board[newXPos][newYPos].piece.Type = Piece.ROOK;
                 }
             }
             else
@@ -1034,17 +1072,14 @@ public class Game implements MouseListener{
                 Board[newXPos][newYPos].piece.Type = Piece.KING;
                 if(newXPos == oldXPos+2)
                 {
-                    Board[7][0].piece.Move(5, 0);
+                    Castle(7,0,5,0);
 
-                    Board[7][0].piece = BlackRook[1];
-                    Board[newXPos][newYPos].piece.Type = Piece.ROOK;
+                    
                 }
                 if(newXPos == oldXPos-2)
                 {
-                    Board[0][0].piece.Move(4, 0);
+                    Castle(0,0,3,0);
 
-                    Board[0][0].piece = BlackRook[0];
-                    Board[newXPos][newYPos].piece.Type = Piece.ROOK;
                 }
             }
                 
@@ -1055,7 +1090,7 @@ public class Game implements MouseListener{
         }
         
 
-        Board[newXPos][newYPos].Type = Piece.PAWN;
+        // Board[newXPos][newYPos].Type = Piece.PAWN;
         // Board[newXPos][newXPos].piece = new Piece();
         Board[oldXPos][oldYPos].piece = null;
         Board[oldXPos][oldYPos].isOcupied = false;
