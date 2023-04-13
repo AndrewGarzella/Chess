@@ -753,28 +753,28 @@ public class Game implements MouseListener{
                     // TODO check if square king is trying to move to is defended
                     for (int i = -1; i < 2; i++)
                     {
-                        // check squares 1 row above king
+                        // check squares 1 row below king
                         try{
-                            if(!Board[xSquare+i][ySquare+1].isOcupied)
-                                LegalMoves.add(new Point(xSquare+i,ySquare+1));
-                            else if(!Board[xSquare+i][ySquare+1].isDefended && !(Board[xSquare][ySquare].piece.White == Board[xSquare+i][ySquare+1].piece.White))
-                                LegalMoves.add(new Point(xSquare+i,ySquare+1));
-                            
-                            
+                            if(!Board[xSquare+i][ySquare+1].isOcupied && !Board[xSquare+i][ySquare+1].isDefended(xSquare+i, ySquare+1, Board[xSquare][ySquare].piece.White))
+                                LegalMoves.add(new Point(xSquare+i,ySquare+1)); 
+                            else if(!Board[xSquare+i][ySquare+1].isDefended(xSquare+i, ySquare+1, Board[xSquare][ySquare].piece.White))
+                                LegalMoves.add(new Point(xSquare+i,ySquare+1));      
                         } catch (Exception n){}
-
+                  
                         try {
-                            if(!Board[xSquare+i][ySquare].isOcupied)
+                            if(!Board[xSquare+i][ySquare].isOcupied && !Board[xSquare+i][ySquare].isDefended(xSquare+i, ySquare, Board[xSquare][ySquare].piece.White))
                                 LegalMoves.add(new Point(xSquare+i,ySquare));
-                            else if(!Board[xSquare+i][ySquare].isDefended && !(Board[xSquare][ySquare].piece.White == Board[xSquare+i][ySquare].piece.White))
+                            else if(!Board[xSquare+i][ySquare].isDefended(xSquare+i, ySquare, Board[xSquare][ySquare].piece.White))
                                 LegalMoves.add(new Point(xSquare+i,ySquare));
+
                         } catch (Exception n) {}
                         
                         try {
-                            if(!Board[xSquare+i][ySquare-1].isOcupied)
+                            if(!Board[xSquare+i][ySquare-1].isOcupied && !Board[xSquare+i][ySquare-1].isDefended(xSquare+i, ySquare-1, Board[xSquare][ySquare-1].piece.White))
                                 LegalMoves.add(new Point(xSquare+i,ySquare-1));
-                            else if(!Board[xSquare+i][ySquare-1].isDefended && !(Board[xSquare][ySquare].piece.White == Board[xSquare+i][ySquare-1].piece.White))
+                            else if(!Board[xSquare+i][ySquare-1].isDefended(xSquare+i, ySquare-1, Board[xSquare][ySquare-1].piece.White))
                                 LegalMoves.add(new Point(xSquare+i,ySquare-1));
+
                         } catch (Exception n) {}   
                     }
                     
@@ -786,12 +786,9 @@ public class Game implements MouseListener{
                     if(!Board[xSquare+3][ySquare].piece.isFirstMove || !(Board[xSquare+3][ySquare].piece.Type == Piece.ROOK))
                         break;
                     //checks if squares are unocupied
-                    //TODO check if squars aren't defened
-                    if(!Board[xSquare-1][ySquare].isOcupied && !Board[xSquare-2][ySquare].isOcupied)
+                    if(!Board[xSquare-1][ySquare].isOcupied && !Board[xSquare-2][ySquare].isDefended(xSquare-2, ySquare, Board[xSquare][ySquare].piece.White) && !Board[xSquare-1][ySquare].isOcupied && !Board[xSquare-2][ySquare].isDefended(xSquare-1, ySquare, Board[xSquare][ySquare].piece.White))
                         LegalMoves.add(new Point(xSquare-2,ySquare));
-                    if(!Board[xSquare-1][ySquare].isOcupied && !Board[xSquare-2][ySquare].isOcupied)
-                        LegalMoves.add(new Point(xSquare-2,ySquare));
-                        
+       
                     
                     break;
 
@@ -883,6 +880,8 @@ public class Game implements MouseListener{
             }
         }
     }
+
+     
 
     private void Castle(int oldXPos,int oldYPos, int newXPos, int newYPos)
     {
@@ -1125,12 +1124,512 @@ public class Game implements MouseListener{
 
         }
         
-        public boolean isDefended;
+        // public boolean isDefended;
         public boolean isWhite;
         public boolean isOcupied;
         public Piece piece;
         public int Type; // type of piece or indicator in square
 
+        public boolean isDefended(int xSquare, int ySquare, boolean PieceColor) // PieceColor ture = white false = black
+        {
+            ArrayList<Point> DefendedSquares = new ArrayList<Point>();
+            for(int x = 0; x < 8; x++)
+            {
+                for(int y = 0; y < 8; y++)
+                {
+                    if(!Board[x][y].isOcupied)
+                        break;
+                    
+                    switch(Board[x][y].piece.Type){
+                        case Piece.PAWN:
+                            if(Board[x][y].piece.White == PieceColor)
+                            {
+                                // checks if diagonals are ocupied by a black piece
+                                try{
+                                    if(Board[x-1][y-1].isOcupied && !Board[x-1][y-1].piece.White)
+                                        DefendedSquares.add(new Point(x-1,y-1));
+                                    if(Board[x+1][y-1].isOcupied && !Board[x+1][y-1].piece.White)
+                                        DefendedSquares.add(new Point(x+1,y-1));
+                                } catch(Exception n){ // cant use e because mouseclicked passes e in 
+                                    // System.out.println(n);
+                                }
+                            }
+                            // ONLY white pieces for now
+                            if(PieceColor != Board[x][y].piece.White)
+                            {
+
+                                // checks if diagonals are ocupied by a black piece
+                                try{
+                                    if(Board[x-1][y+1].isOcupied && Board[x-1][y+1].piece.White)
+                                        DefendedSquares.add(new Point(x-1,y+1));
+                                    if(Board[x+1][y+1].isOcupied && Board[x+1][y+1].piece.White)
+                                        DefendedSquares.add(new Point(x+1,y+1));
+                                } catch(Exception n){ // cant use e because mouseclicked passes e in 
+                                    // System.out.println(n);
+                                }
+
+                            }
+                            
+                            // TODO add en passant 
+
+                            break;
+
+                        case Piece.KNIGHT:
+                            // need to check square (Starting form most left)
+                            
+                            // points (-2 +1), (-2 -1)
+                            try{
+                                if(!Board[x-2][y+1].isOcupied || !(Board[x-2][y+1].piece.White == Board[x][y].piece.White))
+                                    DefendedSquares.add(new Point(x-2,y+1));
+                                
+                            } catch (Exception n){}
+                            try{
+                                if(!Board[x-2][y-1].isOcupied || !(Board[x-2][y-1].piece.White == Board[x][y].piece.White))
+                                    DefendedSquares.add(new Point(x-2,y-1));
+                                
+                            } catch (Exception n){}
+                            // -1 +2. -1 -2
+                            try{
+                                if(!Board[x-1][y+2].isOcupied || !(Board[x-1][y+2].piece.White == Board[x][y].piece.White))
+                                    DefendedSquares.add(new Point(x-1,y+2));
+                                
+                            } catch (Exception n){}
+                            try{
+                                if(!Board[x-1][y-2].isOcupied || !(Board[x-1][y-2].piece.White == Board[x][y].piece.White))
+                                    DefendedSquares.add(new Point(x-1,y-2));
+                                
+                            } catch (Exception n){}
+                            // +1 +2, +1 -2, 
+                            try{
+                                if(!Board[x+1][y+2].isOcupied || !(Board[x+1][y+2].piece.White == Board[x][y].piece.White))
+                                    DefendedSquares.add(new Point(x+1,y+2));
+                                
+                            } catch (Exception n){}
+                            try{
+                                if(!Board[x+1][y-2].isOcupied || !(Board[x+1][y-2].piece.White == Board[x][y].piece.White))
+                                    DefendedSquares.add(new Point(x+1,y-2));
+                                
+                            } catch (Exception n){}
+                            // +2 +1, +2 -1, 
+                            try{
+                                if(!Board[x+2][y+1].isOcupied || !(Board[x+2][y+1].piece.White == Board[x][y].piece.White))
+                                    DefendedSquares.add(new Point(x+2,y+1));
+                                
+                            } catch (Exception n){}
+                            try{
+                                if(!Board[x+2][y-1].isOcupied || !(Board[x+2][y-1].piece.White == Board[x][y].piece.White))
+                                    DefendedSquares.add(new Point(x+2,y-1));
+                                
+                            } catch (Exception n){}
+                            break;
+
+                        case Piece.BISHOP:
+                            //up left diagonal check
+                            for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
+                            {
+                                try {
+                                    if(!Board[x-i][y-i].isOcupied)
+                                    {
+                                        DefendedSquares.add(new Point(x-i,y-i));
+                                    }
+                                    else if(!(Board[x-i][y-i].piece.White == Board[x][y].piece.White))
+                                    {
+                                        DefendedSquares.add(new Point(x-i,y-i));
+                                        break;
+                                    }
+                                    else 
+                                    {
+                                        break;
+                                    }
+                                    
+                                } catch (Exception n) {
+                                    break;
+                                }                        
+                            }
+                            // checks up right digonal
+                            for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
+                            {
+                                try {
+                                    if(!Board[x+i][y-i].isOcupied)
+                                    {
+                                        DefendedSquares.add(new Point(x+i,y-i));
+                                    }
+                                    else if(!(Board[x+i][y-i].piece.White == Board[x][y].piece.White))
+                                    {
+                                        DefendedSquares.add(new Point(x+i,y-i));
+                                        break;
+                                    }
+                                    else 
+                                    {
+                                        break;
+                                    }
+                                    
+                                } catch (Exception n) {
+                                    break;
+                                }                        
+                            }
+                            // checks down left diagonal
+                            for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
+                            {
+                                try {
+                                    if(!Board[x-i][y+i].isOcupied)
+                                    {
+                                        DefendedSquares.add(new Point(x-i,y+i));
+                                    }
+                                    else if(!(Board[x-i][y+i].piece.White == Board[x][y].piece.White))
+                                    {
+                                        DefendedSquares.add(new Point(x-i,y+i));
+                                        break;
+                                    }
+                                    else 
+                                    {
+                                        break;
+                                    }
+                                    
+                                } catch (Exception n) {
+                                    break;
+                                }                        
+                            }
+                            // down rigth diagonal check
+                            for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
+                            {
+                                try {
+                                    if(!Board[x+i][y+i].isOcupied)
+                                    {
+                                        DefendedSquares.add(new Point(x+i,y+i));
+                                    }
+                                    else if(!(Board[x+i][y+i].piece.White == Board[x][y].piece.White))
+                                    {
+                                        DefendedSquares.add(new Point(x+i,y+i));
+                                        break;
+                                    }
+                                    else 
+                                    {
+                                        break;
+                                    }
+                                    
+                                } catch (Exception n) {
+                                    break;
+                                }                        
+                            }
+                            break;
+
+                        case Piece.ROOK:
+                            // checks staright Up
+                            for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
+                            {
+                                try {
+                                    if(!Board[x][y-i].isOcupied)
+                                    {
+                                        DefendedSquares.add(new Point(x,y-i));
+                                    }
+                                    else if(!(Board[x][y-i].piece.White  == Board[x][y].piece.White))
+                                    {
+                                        DefendedSquares.add(new Point(x,y-i));
+                                        break;
+                                    }
+                                    else 
+                                    {
+                                        break;
+                                    }
+                                    
+                                } catch (Exception n) {
+                                    break;
+                                }                        
+                            }
+                            // checks staright Down
+                            for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
+                            {
+                                try {
+                                    if(!Board[x][y+i].isOcupied)
+                                    {
+                                        DefendedSquares.add(new Point(x,y+i));
+                                    }
+                                    else if(!(Board[x][y+i].piece.White == Board[x][y].piece.White))
+                                    {
+                                        DefendedSquares.add(new Point(x,y+i));
+                                        break;
+                                    }
+                                    else 
+                                    {
+                                        break;
+                                    } 
+                                    
+                                } catch (Exception n) {
+                                    break;
+                                }                        
+                            }
+                            // checks staright Left
+                            for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
+                            {
+                                try {
+                                    if(!Board[x-i][y].isOcupied)
+                                    {
+                                        DefendedSquares.add(new Point(x-i,y));
+                                    }
+                                    else if(!(Board[x-i][y].piece.White == Board[x][y].piece.White))
+                                    {
+                                        DefendedSquares.add(new Point(x-i,y));
+                                        break;
+                                    }
+                                    else 
+                                    {
+                                        break;
+                                    }
+                                    
+                                } catch (Exception n) {
+                                    break;
+                                }                        
+                            }                   
+                            // checks staright Right
+                            for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
+                            {
+                                try {
+                                    if(!Board[x+i][y].isOcupied)
+                                    {
+                                        DefendedSquares.add(new Point(x+i,y));
+                                    }
+                                    else if(!(Board[x+i][y].piece.White == Board[x][y].piece.White))
+                                    {
+                                        DefendedSquares.add(new Point(x+i,y));
+                                        break;
+                                    }
+                                    else 
+                                    {
+                                        break;
+                                    }
+                                    
+                                } catch (Exception n) {
+                                    break;
+                                }                        
+                            }
+                            
+                            break;
+
+                        case Piece.QUEEN:
+                            //up left diagonal check
+                            for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
+                            {
+                                try {
+                                    if(!Board[x-i][y-i].isOcupied)
+                                    {
+                                        DefendedSquares.add(new Point(x-i,y-i));
+                                    }
+                                    else if(!(Board[x-i][y-i].piece.White == Board[x][y].piece.White))
+                                    {
+                                        DefendedSquares.add(new Point(x-i,y-i));
+                                        break;
+                                    }
+                                    else 
+                                    {
+                                        break;
+                                    }
+                                    
+                                } catch (Exception n) {
+                                    break;
+                                }                        
+                            }
+                            // checks up right digonal
+                            for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
+                            {
+                                try {
+                                    if(!Board[x+i][y-i].isOcupied)
+                                    {
+                                        DefendedSquares.add(new Point(x+i,y-i));
+                                    }
+                                    else if(!(Board[x+i][y-i].piece.White == Board[x][y].piece.White))
+                                    {
+                                        DefendedSquares.add(new Point(x+i,y-i));
+                                        break;
+                                    }
+                                    else 
+                                    {
+                                        break;
+                                    }
+                                    
+                                } catch (Exception n) {
+                                    break;
+                                }                        
+                            }
+                            // checks down left diagonal
+                            for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
+                            {
+                                try {
+                                    if(!Board[x-i][y+i].isOcupied)
+                                    {
+                                        DefendedSquares.add(new Point(x-i,y+i));
+                                    }
+                                    else if(!(Board[x-i][y+i].piece.White == Board[x][y].piece.White))
+                                    {
+                                        DefendedSquares.add(new Point(x-i,y+i));
+                                        break;
+                                    }
+                                    else 
+                                    {
+                                        break;
+                                    }
+                                    
+                                } catch (Exception n) {
+                                    break;
+                                }                        
+                            }
+                            // down rigth diagonal check
+                            for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
+                            {
+                                try {
+                                    if(!Board[x+i][y+i].isOcupied)
+                                    {
+                                        DefendedSquares.add(new Point(x+i,y+i));
+                                    }
+                                    else if(!(Board[x+i][y+i].piece.White == Board[x][y].piece.White))
+                                    {
+                                        DefendedSquares.add(new Point(x+i,y+i));
+                                        break;
+                                    }
+                                    else 
+                                    {
+                                        break;
+                                    }
+                                    
+                                } catch (Exception n) {
+                                    break;
+                                }                        
+                            }
+                            // checks staright Up
+                            for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
+                            {
+                                try {
+                                    if(!Board[x][y-i].isOcupied)
+                                    {
+                                        DefendedSquares.add(new Point(x,y-i));
+                                    }
+                                    else if(!(Board[x][y-i].piece.White == Board[x][y].piece.White))
+                                    {
+                                        DefendedSquares.add(new Point(x,y-i));
+                                        break;
+                                    }
+                                    else 
+                                    {
+                                        break;
+                                    }
+                                    
+                                } catch (Exception n) {
+                                    break;
+                                }                        
+                            }
+                            // checks staright Down
+                            for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
+                            {
+                                try {
+                                    if(!Board[x][y+i].isOcupied)
+                                    {
+                                        DefendedSquares.add(new Point(x,y+i));
+                                    }
+                                    else if(!(Board[x][y+i].piece.White == Board[x][y].piece.White))
+                                    {
+                                        DefendedSquares.add(new Point(x,y+i));
+                                        break;
+                                    }
+                                    else 
+                                    {
+                                        break;
+                                    } 
+                                    
+                                } catch (Exception n) {
+                                    break;
+                                }                        
+                            }
+                            // checks staright Left
+                            for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
+                            {
+                                try {
+                                    if(!Board[x-i][y].isOcupied)
+                                    {
+                                        DefendedSquares.add(new Point(x-i,y));
+                                    }
+                                    else if(!(Board[x-i][y].piece.White == Board[x][y].piece.White))
+                                    {
+                                        DefendedSquares.add(new Point(x-i,y));
+                                        break;
+                                    }
+                                    else 
+                                    {
+                                        break;
+                                    }
+                                    
+                                } catch (Exception n) {
+                                    break;
+                                }                        
+                            }                   
+                            // checks staright Right
+                            for(int i = 1; i < 8; i++) // starts at 1 because you cant move to the square you are already in
+                            {
+                                try {
+                                    if(!Board[x+i][y].isOcupied)
+                                    {
+                                        DefendedSquares.add(new Point(x+i,y));
+                                    }
+                                    else if(!(Board[x+i][y].piece.White == Board[x][y].piece.White))
+                                    {
+                                        DefendedSquares.add(new Point(x+i,y));
+                                        break;
+                                    }
+                                    else 
+                                    {
+                                        break;
+                                    }
+                                    
+                                } catch (Exception n) {
+                                    break;
+                                }                        
+                            }
+                            break; 
+                            case Piece.KING:                  
+                            // TODO check if square king is trying to move to is defended
+                            for (int i = -1; i < 2; i++)
+                            {
+                                // check squares 1 row above king
+                                try{
+                                    if(!Board[x+i][y+1].isOcupied)
+                                        DefendedSquares.add(new Point(x+i,y+1));
+                                    else if(!(Board[x][y].piece.White == Board[x+i][y+1].piece.White))
+                                        DefendedSquares.add(new Point(x+i,y+1));
+                                    
+                                    
+                                } catch (Exception n){}
+
+                                try {
+                                    if(!Board[x+i][y].isOcupied)
+                                        DefendedSquares.add(new Point(x+i,y));
+                                    else if(!(Board[x][y].piece.White == Board[x+i][y].piece.White))
+                                        DefendedSquares.add(new Point(x+i,y));
+                                } catch (Exception n) {}
+                                
+                                try {
+                                    if(!Board[x+i][y-1].isOcupied)
+                                        DefendedSquares.add(new Point(x+i,y-1));
+                                    else if(!(Board[x][y].piece.White == Board[x+i][y-1].piece.White))
+                                        DefendedSquares.add(new Point(x+i,y-1));
+                                } catch (Exception n) {}   
+                            }
+                            break;
+                    }
+                    
+
+                    
+                }
+            }
+
+            for(Point i : DefendedSquares)
+            {
+                if( (int) i.getX() == xSquare && (int) i.getY() == ySquare)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
         
     }
 
