@@ -26,6 +26,7 @@ public class Piece  {
     public ImageIcon icon;
     public JLabel label; 
     public int Type;
+    public ArrayList<Point> squaresDefending;
 
     // moves the object label and updates xpos & ypos
     public void Move(int NewXPos, int NewYPos)

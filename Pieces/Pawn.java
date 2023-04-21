@@ -4,14 +4,19 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import java.awt.Color;
+import java.awt.Point;
+import java.util.ArrayList;
 
 public class Pawn extends Piece {
     public Pawn(boolean White, int xPos)
     {
+        squaresDefending = new ArrayList<Point>();
         if(White){
             this.xPos = xPos;
             // OriginalyPos = this.xPos;
             yPos = 6;
+            squaresDefending.add(new Point(xPos+1, yPos-1));
+            squaresDefending.add(new Point(xPos-1, yPos-1));
             icon = new ImageIcon("Sprites/pawnW.png");
             label = new JLabel();
             label.setOpaque(true);
@@ -22,6 +27,8 @@ public class Pawn extends Piece {
         else{
             this.xPos = xPos;
             yPos = 1;
+            squaresDefending.add(new Point(xPos+1, yPos+1));
+            squaresDefending.add(new Point(xPos-1, yPos+1));
             icon = new ImageIcon("Sprites/pawnB.png");
             label = new JLabel();
             label.setOpaque(true);
