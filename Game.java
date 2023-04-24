@@ -734,11 +734,11 @@ public class Game implements MouseListener{
                 if(Board[xSquare-1][ySquare].isOcupied || Board[xSquare-2][ySquare].isOcupied)
                     canCastle = false;
                 
-                if(Board[xSquare][ySquare].piece.White && canCastle){
-                    if(Board[xSquare-1][ySquare].blackIsDefending == 0 && Board[xSquare-2][ySquare].blackIsDefending == 0)
+                if(Board[xSquare][ySquare].piece.White){
+                    if((Board[xSquare-1][ySquare].blackIsDefending == 0 && Board[xSquare-2][ySquare].blackIsDefending == 0) && canCastle)
                         LegalMoves.add(new Point(xSquare-2,ySquare));
                 } else {
-                    if(Board[xSquare-1][ySquare].whiteIsDefending == 0 && Board[xSquare-2][ySquare].whiteIsDefending == 0)
+                    if((Board[xSquare-1][ySquare].whiteIsDefending == 0 && Board[xSquare-2][ySquare].whiteIsDefending == 0) && canCastle)
                         LegalMoves.add(new Point(xSquare-2,ySquare));
                 }
 
@@ -752,11 +752,11 @@ public class Game implements MouseListener{
                 if(Board[xSquare+1][ySquare].isOcupied || Board[xSquare+2][ySquare].isOcupied)
                     canCastle = false;
                 
-                if(Board[xSquare][ySquare].piece.White && canCastle){
-                    if(Board[xSquare+1][ySquare].blackIsDefending == 0 && Board[xSquare+2][ySquare].blackIsDefending == 0)
+                if(Board[xSquare][ySquare].piece.White){
+                    if((Board[xSquare+1][ySquare].blackIsDefending == 0 && Board[xSquare+2][ySquare].blackIsDefending == 0) && canCastle)
                         LegalMoves.add(new Point(xSquare+2,ySquare));
                 } else {
-                    if(Board[xSquare+1][ySquare].whiteIsDefending == 0 && Board[xSquare+2][ySquare].whiteIsDefending == 0)
+                    if((Board[xSquare+1][ySquare].whiteIsDefending == 0 && Board[xSquare+2][ySquare].whiteIsDefending == 0) && canCastle)
                         LegalMoves.add(new Point(xSquare+2,ySquare));
                 }
     
