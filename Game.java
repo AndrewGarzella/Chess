@@ -726,7 +726,7 @@ public class Game implements MouseListener{
 
                 //checks if kings first move
                 if(!Board[xSquare][ySquare].piece.isFirstMove)
-                    canCastle = false;
+                    break;
                 //checks if Rook is ins in corner and hasn't moved
                 if(!Board[xSquare-4][ySquare].piece.isFirstMove)//|| !(Board[xSquare-4][ySquare].piece.Type == Piece.ROOK)
                     canCastle = false;
@@ -744,8 +744,6 @@ public class Game implements MouseListener{
 
                 canCastle = true;
                 //checks if kings first move
-                if(!Board[xSquare][ySquare].piece.isFirstMove)
-                    canCastle = false;
                 if(!Board[xSquare+3][ySquare].piece.isFirstMove)
                     canCastle = false;
                 //checks if squares are unocupied
@@ -960,8 +958,16 @@ public class Game implements MouseListener{
         Board[oldXPos][oldYPos].piece.isFirstMove = false;
         try {
             Board[newXPos][newYPos].piece.label.setVisible(false);
+            while(Board[newXPos][newYPos].piece.squaresDefending.size() != 0){
+                if(Board[newXPos][newYPos].piece.White)
+                   Board[(int) Board[newXPos][newYPos].piece.squaresDefending.get(0).getX()][(int) Board[newXPos][newYPos].piece.squaresDefending.get(0).getY()].whiteIsDefending--; 
+                else
+                   Board[(int) Board[newXPos][newYPos].piece.squaresDefending.get(0).getX()][(int) Board[newXPos][newYPos].piece.squaresDefending.get(0).getY()].blackIsDefending--; 
 
+                Board[newXPos][newYPos].piece.squaresDefending.remove(0);
+            }            
         } catch (Exception e) {}
+
         switch(Board[oldXPos][oldYPos].piece.Type){
             case Piece.PAWN:
                 if(Board[oldXPos][oldYPos].piece.White)
@@ -973,26 +979,19 @@ public class Game implements MouseListener{
                             //no worky
                             while(i.squaresDefending.size() != 0)
                             {
-                                Board[(int) i.squaresDefending.get(0).getX()][(int) i.squaresDefending.get(0).getY()].whiteIsDefending--;
+                                try {
+                                    Board[(int) i.squaresDefending.get(0).getX()][(int) i.squaresDefending.get(0).getY()].whiteIsDefending--;
+                                } catch (Exception e) {}
                                 i.squaresDefending.remove(0);
                             }
 
-                            // for(int j = 0; j < i.squaresDefending.size();j++)
-                            // {
-                            //     Board[(int) i.squaresDefending.get(j).getX()][(int) i.squaresDefending.get(j).getY()].whiteIsDefending--;
-                            //     i.squaresDefending.remove(j);
-                            //     j--;
-                            // }
-
-                            // for(Point p : i.squaresDefending){
-                            //     Board[(int) p.getX()][(int) p.getY()].whiteIsDefending--;
-                            //     i.squaresDefending.remove(p);
-                            // }
                             i.squaresDefending.add(new Point(i.xPos+1, i.yPos-1));
                             i.squaresDefending.add(new Point(i.xPos-1, i.yPos-1));
                             for(Point p : i.squaresDefending)
                             {
-                                Board[(int) p.getX()][(int) p .getY()].whiteIsDefending++;
+                                try {
+                                    Board[(int) p.getX()][(int) p .getY()].whiteIsDefending++;                                    
+                                } catch (Exception e) {}
                             }
                             Board[newXPos][newYPos].piece = i;
                             Board[newXPos][newYPos].piece.Type = Piece.PAWN;
@@ -1007,18 +1006,18 @@ public class Game implements MouseListener{
                         {
                             while(i.squaresDefending.size() != 0)
                             {
-                                Board[(int) i.squaresDefending.get(0).getX()][(int) i.squaresDefending.get(0).getY()].blackIsDefending--;
+                                try {
+                                    Board[(int) i.squaresDefending.get(0).getX()][(int) i.squaresDefending.get(0).getY()].blackIsDefending--;                                    
+                                } catch (Exception e) {}
                                 i.squaresDefending.remove(0);
                             }
-                            // for(Point p : i.squaresDefending){
-                            //     Board[(int) p.getX()][(int) p.getY()].blackIsDefending--;
-                            //     i.squaresDefending.remove(p);
-                            // }
                             i.squaresDefending.add(new Point(i.xPos+1, i.yPos+1));
                             i.squaresDefending.add(new Point(i.xPos-1, i.yPos+1));
                             for(Point p : i.squaresDefending)
                             {
-                                Board[(int) p.getX()][(int) p .getY()].blackIsDefending++;
+                                try {
+                                    Board[(int) p.getX()][(int) p .getY()].blackIsDefending++;
+                                } catch (Exception e) {}
                             }
                             Board[newXPos][newYPos].piece = i;
                             Board[newXPos][newYPos].piece.Type = Piece.PAWN;
@@ -1028,10 +1027,67 @@ public class Game implements MouseListener{
                 break;
 
             case Piece.KNIGHT:
+
+            /*try{
+                    if(!Board[xSquare-2][ySquare+1].isOcupied || !(Board[xSquare-2][ySquare+1].piece.White == Board[xSquare][ySquare].piece.White))
+                        LegalMoves.add(new Point(xSquare-2,ySquare+1));
+                    
+                } catch (Exception n){}
+                try{
+                    if(!Board[xSquare-2][ySquare-1].isOcupied || !(Board[xSquare-2][ySquare-1].piece.White == Board[xSquare][ySquare].piece.White))
+                        LegalMoves.add(new Point(xSquare-2,ySquare-1));
+                    
+                } catch (Exception n){}
+                // -1 +2. -1 -2
+                try{
+                    if(!Board[xSquare-1][ySquare+2].isOcupied || !(Board[xSquare-1][ySquare+2].piece.White == Board[xSquare][ySquare].piece.White))
+                        LegalMoves.add(new Point(xSquare-1,ySquare+2));
+                    
+                } catch (Exception n){}
+                try{
+                    if(!Board[xSquare-1][ySquare-2].isOcupied || !(Board[xSquare-1][ySquare-2].piece.White == Board[xSquare][ySquare].piece.White))
+                        LegalMoves.add(new Point(xSquare-1,ySquare-2));
+                    
+                } catch (Exception n){}
+                // +1 +2, +1 -2, 
+                try{
+                    if(!Board[xSquare+1][ySquare+2].isOcupied || !(Board[xSquare+1][ySquare+2].piece.White == Board[xSquare][ySquare].piece.White))
+                        LegalMoves.add(new Point(xSquare+1,ySquare+2));
+                    
+                } catch (Exception n){}
+                try{
+                    if(!Board[xSquare+1][ySquare-2].isOcupied || !(Board[xSquare+1][ySquare-2].piece.White == Board[xSquare][ySquare].piece.White))
+                        LegalMoves.add(new Point(xSquare+1,ySquare-2));
+                    
+                } catch (Exception n){}
+                // +2 +1, +2 -1, 
+                try{
+                    if(!Board[xSquare+2][ySquare+1].isOcupied || !(Board[xSquare+2][ySquare+1].piece.White == Board[xSquare][ySquare].piece.White))
+                        LegalMoves.add(new Point(xSquare+2,ySquare+1));
+                    
+                } catch (Exception n){}
+                try{
+                    if(!Board[xSquare+2][ySquare-1].isOcupied || !(Board[xSquare+2][ySquare-1].piece.White == Board[xSquare][ySquare].piece.White))
+                        LegalMoves.add(new Point(xSquare+2,ySquare-1)); */
                 if(Board[oldXPos][oldYPos].piece.White)
                 {
                     for(Knight i : WhiteKnight)
                     {
+                        while(i.squaresDefending.size() != 0)
+                        {
+                            try {
+                                Board[(int) i.squaresDefending.get(0).getX()][(int) i.squaresDefending.get(0).getY()].blackIsDefending--;
+                            } catch (Exception e) {}
+                            i.squaresDefending.remove(0);
+                        }
+                        i.squaresDefending.add(new Point(i.xPos-2, i.yPos+1));
+                        i.squaresDefending.add(new Point(i.xPos-2, i.yPos-1));
+                        i.squaresDefending.add(new Point(i.xPos+2, i.yPos+1));
+                        i.squaresDefending.add(new Point(i.xPos+2, i.yPos-1));
+                        i.squaresDefending.add(new Point(i.xPos-1, i.yPos+2));
+                        i.squaresDefending.add(new Point(i.xPos-1, i.yPos-2));
+                        i.squaresDefending.add(new Point(i.xPos+1, i.yPos+2));
+                        i.squaresDefending.add(new Point(i.xPos+1, i.yPos-2));
                         if(i.xPos == newXPos && i.yPos == newYPos)
                         {
                             Board[newXPos][newYPos].piece = i;
@@ -1043,6 +1099,21 @@ public class Game implements MouseListener{
                 {   
                     for(Knight i : BlackKnight)
                     {
+                        while(i.squaresDefending.size() != 0)
+                        {
+                            try {
+                                Board[(int) i.squaresDefending.get(0).getX()][(int) i.squaresDefending.get(0).getY()].blackIsDefending--;
+                            } catch (Exception e) {}
+                            i.squaresDefending.remove(0);
+                        }
+                        i.squaresDefending.add(new Point(i.xPos-2, i.yPos+1));
+                        i.squaresDefending.add(new Point(i.xPos-2, i.yPos-1));
+                        i.squaresDefending.add(new Point(i.xPos+2, i.yPos+1));
+                        i.squaresDefending.add(new Point(i.xPos+2, i.yPos-1));
+                        i.squaresDefending.add(new Point(i.xPos-1, i.yPos+2));
+                        i.squaresDefending.add(new Point(i.xPos-1, i.yPos-2));
+                        i.squaresDefending.add(new Point(i.xPos+1, i.yPos+2));
+                        i.squaresDefending.add(new Point(i.xPos+1, i.yPos-2));
                         if(i.xPos == newXPos && i.yPos == newYPos)
                         {
                             Board[newXPos][newYPos].piece = i;
