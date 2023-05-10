@@ -22,7 +22,7 @@ public class King extends Piece {
         else
         {
             this.xPos = xPos;
-            yPos = 0;
+            yPos = 0;  
             icon = new ImageIcon("Sprites/kingB.png");
             label = new JLabel();
             label.setOpaque(true);

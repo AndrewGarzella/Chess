@@ -13,7 +13,6 @@ public class Pawn extends Piece {
         squaresDefending = new ArrayList<Point>();
         if(White){
             this.xPos = xPos;
-            // OriginalyPos = this.xPos;
             yPos = 6;
             squaresDefending.add(new Point(xPos+1, yPos-1));
             squaresDefending.add(new Point(xPos-1, yPos-1));
@@ -70,28 +69,4 @@ public class Pawn extends Piece {
 
         Type = Piece.PAWN;
     }
-
-    // @Override
-    // public ArrayList<Point> FindMove(Square[][] Board)
-    // {
-    //     ArrayList<Point> LegalMoves = new ArrayList<Point>();
-    //     if(!(Board[xPos][yPos+1].isOcupied))
-    //     {
-    //         LegalMoves.add(new Point(xPos,yPos));
-    //     }
-
-    //     return LegalMoves;
-    // }
-
-    // private int OriginalyPosp;
-
-    // boolean CanOPS()
-    // {
-    //     if(yPos == OriginalyPos+2)
-    //     {
-
-    //     }
-
-    // }
-
 }
