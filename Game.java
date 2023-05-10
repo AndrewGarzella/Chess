@@ -57,142 +57,159 @@ public class Game implements MouseListener{
         layeredPane.setBounds(0,0,526,545);
 
         panel = new JPanel(){
-        @Override
-        public void paint(Graphics g) 
-        {
-            boolean white = true;
-            super.paint(g);
-            for(int x = 0; x < 8; x++)
-            {                    
-                for(int y = 0; y < 8; y++)
-                {
-                    if(white)
+            @Override
+            public void paint(Graphics g) 
+            {
+                boolean white = true;
+                super.paint(g);
+                for(int x = 0; x < 8; x++)
+                {                    
+                    for(int y = 0; y < 8; y++)
                     {
-                        g.setColor(Color.WHITE);
-                    }                     
-                    else 
-                    {        
-                        g.setColor(Color.DARK_GRAY);
+                        if(white)
+                        {
+                            g.setColor(Color.WHITE);
+                        }                     
+                        else 
+                        {        
+                            g.setColor(Color.DARK_GRAY);
+                        }
+                        //is painting them 70 pixels big 
+                        g.fillRect(x*64, y*64, 64, 64);
+                        white = !white;
                     }
-                    //is painting them 70 pixels big 
-                    g.fillRect(x*64, y*64, 64, 64);
+
                     white = !white;
+
                 }
-
-                white = !white;
-
             }
-        }
-    };
+        };
 
-    panel.setBounds(0,0,560,560);
+        panel.setBounds(0,0,560,560);
 
-    setBoard();
-    
-    // adds board
-    layeredPane.add(panel);
+        setBoard();
+        
+        // adds board
+        layeredPane.add(panel);
 
-    frame.add(layeredPane);
-    frame.addMouseListener(this);
-    frame.setLayout(null);
+        frame.add(layeredPane);
+        frame.addMouseListener(this);
+        frame.setLayout(null);
 
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setResizable(false);
-    frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
+        frame.setVisible(true);
     }
 
     private void setBoard()
     {
         Boolean White = true;
 
-    // sets board and adds indicators
-    for(int i = 0; i < 8; i++)
-    {
-        for(int j = 0; j < 8; j++)
+        // sets board and adds indicators
+        for(int i = 0; i < 8; i++)
         {
-            
-            // white not white
-            if((i+j)%2 == 0)
-                White = true;
-            else 
-                White = false;
-
-            Indicators[i][j] = new Indicator(i, j, White);
-
-            layeredPane.add(Indicators[i][j].label);
-
-            if(!(j == 0 || j == 1 || j == 6 || j == 7))
+            for(int j = 0; j < 8; j++)
             {
-                Board[i][j] = new Square(false,White);
-            }              
+                
+                // white not white
+                if((i+j)%2 == 0)
+                    White = true;
+                else 
+                    White = false;
+
+                Indicators[i][j] = new Indicator(i, j, White);
+
+                layeredPane.add(Indicators[i][j].label);
+
+                if(!(j == 0 || j == 1 || j == 6 || j == 7))
+                {
+                    Board[i][j] = new Square(false,White);
+                }              
+            }
+        } 
+        
+
+        //adds pawns
+        for(int i = 0; i < 8;i++)
+        {
+            WhitePawns[i] = new Pawn(true, i);
+            layeredPane.add(WhitePawns[i].label);
+            Board[WhitePawns[i].xPos][WhitePawns[i].yPos] = new Square(true, WhitePawns[i]);
+            for(Point p : WhitePawns[i].squaresDefending){
+                try {
+                    Board[(int) p.getX()][(int) p.getY()].whiteIsDefending++;
+                } catch (Exception e) {}
+            }
         }
-    } 
-    
+        for(int i = 0; i < 8;i++)
+        {
+            BlackPawns[i] = new Pawn(false, i);
+            layeredPane.add(BlackPawns[i].label);
+            Board[BlackPawns[i].xPos][BlackPawns[i].yPos] = new Square(true, BlackPawns[i]);
+            for(Point p : BlackPawns[i].squaresDefending){
+                try {
+                    Board[(int) p.getX()][(int) p.getY()].blackIsDefending++;
+                } catch (Exception e) {}
+            }
+        }
 
-    //adds pawns
-    for(int i = 0; i < 8;i++)
-    {
-        WhitePawns[i] = new Pawn(true, i);
-        layeredPane.add(WhitePawns[i].label);
-        Board[WhitePawns[i].xPos][WhitePawns[i].yPos] = new Square(true, WhitePawns[i]);
-        for(Point p : WhitePawns[i].squaresDefending)
-        try {
-            Board[(int) p.getX()][(int) p.getY()].whiteIsDefending++;
-        } catch (Exception e) {}
-    }
-    for(int i = 0; i < 8;i++)
-    {
-        BlackPawns[i] = new Pawn(false, i);
-        layeredPane.add(BlackPawns[i].label);
-        Board[BlackPawns[i].xPos][BlackPawns[i].yPos] = new Square(true, BlackPawns[i]);
-        for(Point p : BlackPawns[i].squaresDefending)
-        try {
-            Board[(int) p.getX()][(int) p.getY()].blackIsDefending++;
-        } catch (Exception e) {}
-    }
+        //adds knights
+        // Board[WhiteKnight[0].xPos][WhiteKnight[0].yPos] = new Square(true, WhiteKnight[0]);
+        // Board[WhiteKnight[1].xPos][WhiteKnight[1].yPos] = new Square(true, WhiteKnight[1]);
+        // Board[BlackKnight[0].xPos][BlackKnight[0].yPos] = new Square(true, BlackKnight[0]);
+        // Board[BlackKnight[1].xPos][BlackKnight[1].yPos] = new Square(true, BlackKnight[1]);
+        for(int i = 0; i < 2;i++)
+        {
+            layeredPane.add(WhiteKnight[i].label);
+            Board[WhiteKnight[i].xPos][WhiteKnight[i].yPos] = new Square(true, WhiteKnight[i]);
+            for(Point p : WhiteKnight[i].squaresDefending){
+                try {
+                    Board[(int) p.getX()][(int) p.getY()].whiteIsDefending++;
+                } catch (Exception e) {}
+            }
+        }
+        for(int i = 0; i < 2;i++)
+        {
+            layeredPane.add(BlackKnight[i].label);
+            Board[BlackKnight[i].xPos][BlackKnight[i].yPos] = new Square(true, BlackKnight[i]);
+            for(Point p : BlackKnight[i].squaresDefending){
+                try {
+                    Board[(int) p.getX()][(int) p.getY()].blackIsDefending++;
+                } catch (Exception e) {}
+            }
+        }
 
-    //adds Kings 
-    Board[WhiteKing.xPos][WhiteKing.yPos] = new Square(true, WhiteKing);
-    Board[BlackKing.xPos][BlackKing.yPos] = new Square(true, BlackKing);    
-    layeredPane.add(WhiteKing.label);
-    layeredPane.add(BlackKing.label);
-    
-    //adds queens
-    Board[WhiteQueen.xPos][WhiteQueen.yPos] = new Square(true, WhiteQueen);
-    Board[BlackQueen.xPos][BlackQueen.yPos] = new Square(true, BlackQueen);
-    layeredPane.add(WhiteQueen.label);
-    layeredPane.add(BlackQueen.label);
+        //adds bishops
+        Board[WhiteBishop[0].xPos][WhiteBishop[0].yPos] = new Square(true, WhiteBishop[0]);
+        Board[WhiteBishop[1].xPos][WhiteBishop[1].yPos] = new Square(true, WhiteBishop[1]);
+        Board[BlackBishop[0].xPos][BlackBishop[0].yPos] = new Square(true, BlackBishop[0]);
+        Board[BlackBishop[1].xPos][BlackBishop[1].yPos] = new Square(true, BlackBishop[1]);
+        layeredPane.add(WhiteBishop[0].label);
+        layeredPane.add(WhiteBishop[1].label);
+        layeredPane.add(BlackBishop[0].label);
+        layeredPane.add(BlackBishop[1].label);
+        
+        //adds Rooks
+        Board[WhiteRook[0].xPos][WhiteRook[0].yPos] = new Square(true, WhiteRook[0]);
+        Board[WhiteRook[1].xPos][WhiteRook[1].yPos] = new Square(true, WhiteRook[1]);
+        Board[BlackRook[0].xPos][BlackRook[0].yPos] = new Square(true, BlackRook[0]);
+        Board[BlackRook[1].xPos][BlackRook[1].yPos] = new Square(true, BlackRook[1]);
+        layeredPane.add(WhiteRook[0].label);
+        layeredPane.add(WhiteRook[1].label);
+        layeredPane.add(BlackRook[0].label);
+        layeredPane.add(BlackRook[1].label);
 
-    //adds bishops
-    Board[WhiteBishop[0].xPos][WhiteBishop[0].yPos] = new Square(true, WhiteBishop[0]);
-    Board[WhiteBishop[1].xPos][WhiteBishop[1].yPos] = new Square(true, WhiteBishop[1]);
-    Board[BlackBishop[0].xPos][BlackBishop[0].yPos] = new Square(true, BlackBishop[0]);
-    Board[BlackBishop[1].xPos][BlackBishop[1].yPos] = new Square(true, BlackBishop[1]);
-    layeredPane.add(WhiteBishop[0].label);
-    layeredPane.add(WhiteBishop[1].label);
-    layeredPane.add(BlackBishop[0].label);
-    layeredPane.add(BlackBishop[1].label);
-    
-
-    //adds knights
-    Board[WhiteKnight[0].xPos][WhiteKnight[0].yPos] = new Square(true, WhiteKnight[0]);
-    Board[WhiteKnight[1].xPos][WhiteKnight[1].yPos] = new Square(true, WhiteKnight[1]);
-    Board[BlackKnight[0].xPos][BlackKnight[0].yPos] = new Square(true, BlackKnight[0]);
-    Board[BlackKnight[1].xPos][BlackKnight[1].yPos] = new Square(true, BlackKnight[1]);
-    layeredPane.add(WhiteKnight[0].label);
-    layeredPane.add(WhiteKnight[1].label);
-    layeredPane.add(BlackKnight[0].label);
-    layeredPane.add(BlackKnight[1].label);
-
-    //adds Rooks
-    Board[WhiteRook[0].xPos][WhiteRook[0].yPos] = new Square(true, WhiteRook[0]);
-    Board[WhiteRook[1].xPos][WhiteRook[1].yPos] = new Square(true, WhiteRook[1]);
-    Board[BlackRook[0].xPos][BlackRook[0].yPos] = new Square(true, BlackRook[0]);
-    Board[BlackRook[1].xPos][BlackRook[1].yPos] = new Square(true, BlackRook[1]);
-    layeredPane.add(WhiteRook[0].label);
-    layeredPane.add(WhiteRook[1].label);
-    layeredPane.add(BlackRook[0].label);
-    layeredPane.add(BlackRook[1].label);
+        //adds queens
+        Board[WhiteQueen.xPos][WhiteQueen.yPos] = new Square(true, WhiteQueen);
+        Board[BlackQueen.xPos][BlackQueen.yPos] = new Square(true, BlackQueen);
+        layeredPane.add(WhiteQueen.label);
+        layeredPane.add(BlackQueen.label);
+       
+        //adds Kings 
+        Board[WhiteKing.xPos][WhiteKing.yPos] = new Square(true, WhiteKing);
+        Board[BlackKing.xPos][BlackKing.yPos] = new Square(true, BlackKing);    
+        layeredPane.add(WhiteKing.label);
+        layeredPane.add(BlackKing.label); 
     }
 
     private ArrayList<Point> CheckLegalMoves(int xSquare, int ySquare){
@@ -1027,98 +1044,74 @@ public class Game implements MouseListener{
                 break;
 
             case Piece.KNIGHT:
-
-            /*try{
-                    if(!Board[xSquare-2][ySquare+1].isOcupied || !(Board[xSquare-2][ySquare+1].piece.White == Board[xSquare][ySquare].piece.White))
-                        LegalMoves.add(new Point(xSquare-2,ySquare+1));
-                    
-                } catch (Exception n){}
-                try{
-                    if(!Board[xSquare-2][ySquare-1].isOcupied || !(Board[xSquare-2][ySquare-1].piece.White == Board[xSquare][ySquare].piece.White))
-                        LegalMoves.add(new Point(xSquare-2,ySquare-1));
-                    
-                } catch (Exception n){}
-                // -1 +2. -1 -2
-                try{
-                    if(!Board[xSquare-1][ySquare+2].isOcupied || !(Board[xSquare-1][ySquare+2].piece.White == Board[xSquare][ySquare].piece.White))
-                        LegalMoves.add(new Point(xSquare-1,ySquare+2));
-                    
-                } catch (Exception n){}
-                try{
-                    if(!Board[xSquare-1][ySquare-2].isOcupied || !(Board[xSquare-1][ySquare-2].piece.White == Board[xSquare][ySquare].piece.White))
-                        LegalMoves.add(new Point(xSquare-1,ySquare-2));
-                    
-                } catch (Exception n){}
-                // +1 +2, +1 -2, 
-                try{
-                    if(!Board[xSquare+1][ySquare+2].isOcupied || !(Board[xSquare+1][ySquare+2].piece.White == Board[xSquare][ySquare].piece.White))
-                        LegalMoves.add(new Point(xSquare+1,ySquare+2));
-                    
-                } catch (Exception n){}
-                try{
-                    if(!Board[xSquare+1][ySquare-2].isOcupied || !(Board[xSquare+1][ySquare-2].piece.White == Board[xSquare][ySquare].piece.White))
-                        LegalMoves.add(new Point(xSquare+1,ySquare-2));
-                    
-                } catch (Exception n){}
-                // +2 +1, +2 -1, 
-                try{
-                    if(!Board[xSquare+2][ySquare+1].isOcupied || !(Board[xSquare+2][ySquare+1].piece.White == Board[xSquare][ySquare].piece.White))
-                        LegalMoves.add(new Point(xSquare+2,ySquare+1));
-                    
-                } catch (Exception n){}
-                try{
-                    if(!Board[xSquare+2][ySquare-1].isOcupied || !(Board[xSquare+2][ySquare-1].piece.White == Board[xSquare][ySquare].piece.White))
-                        LegalMoves.add(new Point(xSquare+2,ySquare-1)); */
                 if(Board[oldXPos][oldYPos].piece.White)
                 {
                     for(Knight i : WhiteKnight)
                     {
-                        while(i.squaresDefending.size() != 0)
-                        {
-                            try {
-                                Board[(int) i.squaresDefending.get(0).getX()][(int) i.squaresDefending.get(0).getY()].blackIsDefending--;
-                            } catch (Exception e) {}
-                            i.squaresDefending.remove(0);
-                        }
-                        i.squaresDefending.add(new Point(i.xPos-2, i.yPos+1));
-                        i.squaresDefending.add(new Point(i.xPos-2, i.yPos-1));
-                        i.squaresDefending.add(new Point(i.xPos+2, i.yPos+1));
-                        i.squaresDefending.add(new Point(i.xPos+2, i.yPos-1));
-                        i.squaresDefending.add(new Point(i.xPos-1, i.yPos+2));
-                        i.squaresDefending.add(new Point(i.xPos-1, i.yPos-2));
-                        i.squaresDefending.add(new Point(i.xPos+1, i.yPos+2));
-                        i.squaresDefending.add(new Point(i.xPos+1, i.yPos-2));
                         if(i.xPos == newXPos && i.yPos == newYPos)
                         {
-                            Board[newXPos][newYPos].piece = i;
-                            Board[newXPos][newYPos].piece.Type = Piece.KNIGHT;
-                        }                  
+                            while(i.squaresDefending.size() != 0)
+                            {
+                                try {
+                                    Board[(int) i.squaresDefending.get(0).getX()][(int) i.squaresDefending.get(0).getY()].whiteIsDefending--;
+                                } catch (Exception e) {}
+                                i.squaresDefending.remove(0);
+                            }
+                            i.squaresDefending.add(new Point(i.xPos-2, i.yPos+1));
+                            i.squaresDefending.add(new Point(i.xPos-2, i.yPos-1));
+                            i.squaresDefending.add(new Point(i.xPos+2, i.yPos+1));
+                            i.squaresDefending.add(new Point(i.xPos+2, i.yPos-1));
+                            i.squaresDefending.add(new Point(i.xPos-1, i.yPos+2));
+                            i.squaresDefending.add(new Point(i.xPos-1, i.yPos-2));
+                            i.squaresDefending.add(new Point(i.xPos+1, i.yPos+2));
+                            i.squaresDefending.add(new Point(i.xPos+1, i.yPos-2));
+                            for(Point p : i.squaresDefending)
+                            {
+                                try {
+                                    Board[(int) p.getX()][(int) p .getY()].whiteIsDefending++;                                    
+                                } catch (Exception e) {}
+                            }
+                            if(i.xPos == newXPos && i.yPos == newYPos)
+                            {
+                                Board[newXPos][newYPos].piece = i;
+                                Board[newXPos][newYPos].piece.Type = Piece.KNIGHT;
+                            }                  
+                        }
                     }
                 }
                 else
                 {   
                     for(Knight i : BlackKnight)
                     {
-                        while(i.squaresDefending.size() != 0)
-                        {
-                            try {
-                                Board[(int) i.squaresDefending.get(0).getX()][(int) i.squaresDefending.get(0).getY()].blackIsDefending--;
-                            } catch (Exception e) {}
-                            i.squaresDefending.remove(0);
-                        }
-                        i.squaresDefending.add(new Point(i.xPos-2, i.yPos+1));
-                        i.squaresDefending.add(new Point(i.xPos-2, i.yPos-1));
-                        i.squaresDefending.add(new Point(i.xPos+2, i.yPos+1));
-                        i.squaresDefending.add(new Point(i.xPos+2, i.yPos-1));
-                        i.squaresDefending.add(new Point(i.xPos-1, i.yPos+2));
-                        i.squaresDefending.add(new Point(i.xPos-1, i.yPos-2));
-                        i.squaresDefending.add(new Point(i.xPos+1, i.yPos+2));
-                        i.squaresDefending.add(new Point(i.xPos+1, i.yPos-2));
                         if(i.xPos == newXPos && i.yPos == newYPos)
                         {
-                            Board[newXPos][newYPos].piece = i;
-                            Board[newXPos][newYPos].piece.Type = Piece.KNIGHT;
-                        }                  
+                            while(i.squaresDefending.size() != 0)
+                            {
+                                try {
+                                    Board[(int) i.squaresDefending.get(0).getX()][(int) i.squaresDefending.get(0).getY()].blackIsDefending--;
+                                } catch (Exception e) {}
+                                i.squaresDefending.remove(0);
+                            }
+                            i.squaresDefending.add(new Point(i.xPos-2, i.yPos+1));
+                            i.squaresDefending.add(new Point(i.xPos-2, i.yPos-1));
+                            i.squaresDefending.add(new Point(i.xPos+2, i.yPos+1));
+                            i.squaresDefending.add(new Point(i.xPos+2, i.yPos-1));
+                            i.squaresDefending.add(new Point(i.xPos-1, i.yPos+2));
+                            i.squaresDefending.add(new Point(i.xPos-1, i.yPos-2));
+                            i.squaresDefending.add(new Point(i.xPos+1, i.yPos+2));
+                            i.squaresDefending.add(new Point(i.xPos+1, i.yPos-2));
+                            for(Point p : i.squaresDefending)
+                            {
+                                try {
+                                    Board[(int) p.getX()][(int) p .getY()].blackIsDefending++;                                    
+                                } catch (Exception e) {}
+                            }
+                            if(i.xPos == newXPos && i.yPos == newYPos)
+                            {
+                                Board[newXPos][newYPos].piece = i;
+                                Board[newXPos][newYPos].piece.Type = Piece.KNIGHT;
+                            }    
+                        }              
                     }
                 }
                 break;
