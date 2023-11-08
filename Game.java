@@ -779,19 +779,28 @@ public class Game implements MouseListener{
                     }
                     
                     //checks if kings first move
-                    if(!Board[xSquare][ySquare].piece.isFirstMove)
-                        break;
+                    { 
+                        if(!Board[xSquare][ySquare].piece.isFirstMove)
+                            break;
 
-                    //checks if Rook is ins in corner and hasn't moved
-                    if(!Board[xSquare+3][ySquare].piece.isFirstMove || !(Board[xSquare+3][ySquare].piece.Type == Piece.ROOK))
-                        break;
-                    //checks if squares are unocupied
-                    //TODO check if squars aren't defened
-                    if(!Board[xSquare-1][ySquare].isOcupied && !Board[xSquare-2][ySquare].isOcupied)
-                        LegalMoves.add(new Point(xSquare-2,ySquare));
-                    if(!Board[xSquare-1][ySquare].isOcupied && !Board[xSquare-2][ySquare].isOcupied)
-                        LegalMoves.add(new Point(xSquare-2,ySquare));
+                        //checks if Rook is ins in corner and hasn't moved
+                        if(!Board[xSquare+3][ySquare].piece.isFirstMove)
+                            break;
+                        //checks if squares are unocupied
+                        //TODO check if squars aren't defened
+                        if(!Board[xSquare+1][ySquare].isOcupied && !Board[xSquare+2][ySquare].isOcupied)
+                            LegalMoves.add(new Point(xSquare+2,ySquare));
+                    }
+                    {
+                        if(!Board[xSquare][ySquare].piece.isFirstMove)
+                            break;
                         
+                        if(!Board[xSquare-4][ySquare].piece.isFirstMove)
+                            break;
+                    
+                        if(!Board[xSquare-1][ySquare].isOcupied && !Board[xSquare-2][ySquare].isOcupied && !Board[xSquare-3][ySquare].isOcupied)
+                            LegalMoves.add(new Point(xSquare-2,ySquare));
+                    }    
                     
                     break;
 
