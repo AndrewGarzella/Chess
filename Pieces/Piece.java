@@ -37,32 +37,4 @@ public class Piece  {
 
     
 
-    // // gets rid of all data in object
-    // public void clear()
-    // {
-    //     isSelected = null;
-    //     Alive = null;
-    //     xPos = null; 
-    //     yPos = null;
-    //     White = null;
-    //     icon.setImage(null);
-    //     label.; 
-    //     Type = Piece.OPEN;
-    // }
-    
-
-    // public Type getType()
-    // {
-    //     return type;
-    // }
-
-    // public void setType(Type type)
-    // {
-    //     this.type = type;
-    // }
-//     public ArrayList<Point> FindMove(Square[][] Board)
-//     {
-        
-//         return LegalMoves;
-//     }
 }
