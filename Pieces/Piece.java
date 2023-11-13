@@ -26,6 +26,8 @@ public class Piece  {
     public ImageIcon icon;
     public JLabel label; 
     public int Type;
+    
+
 
     // moves the object label and updates xpos & ypos
     public void Move(int NewXPos, int NewYPos)
